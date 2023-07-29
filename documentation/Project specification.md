@@ -1,12 +1,10 @@
 The topic of the project is dungeon generation. I will use python to generate dungeon layouts with a multi-step process.
 
 
-I will generate the initial 2d dungeon layouts with the cellular automata algorithm procedurally using noise mesh, in iterations, see the roguebasin source. I will try to use it so that it only leaves unconnected rooms. During or after that I will mark every unconnected cave / room maybe by simply going over every
+I will generate the initial 2d dungeon layouts with random selection of cells. Then I will start reforming the map using cellular automata algorithm procedurally in iterations, see the roguebasin source. I will try to use it so that it only leaves unconnected rooms. During or after that I will mark every unconnected cave / room maybe by simply going over every
 pixel. Then I will remove too small caves with the flood fill algorithm. Then I will connect unconnected rooms with the Bresenham's line algorithm.
 I might also color the different rooms with different colors with flood fill. I will then use a modified Depth-first search to find the longest path between a starting room
 and the furthest room and mark them as the start / end rooms.
-
-I might use diamond square to make the map 3d
 
 
 The problem I am solving is the need for endless different dungeon layouts. I chose the beforementioned algorithms because they had the most publicity and documentation.
