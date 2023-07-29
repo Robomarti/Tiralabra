@@ -34,9 +34,10 @@ The command also executes all the tests required. The report will be generated t
 
 
 ## User guide:
-[Week 1 report](documentation/User%20guide.md)
+[](documentation/User%20guide.md)
 
 
 ## Weekly reports:
 [Week 1 report](documentation/week%201%20report.md)
+
 [Week 2 report](documentation/week%202%20report.md)
