@@ -1,5 +1,5 @@
 ## Coverage report:
-![Coverage-report](/images/coverage.png)
+![Coverage-report](https://github.com/Robomarti/Tiralabra/blob/main/documentation/images/coverage.png)
 
 
 ## What has been tested, and how
