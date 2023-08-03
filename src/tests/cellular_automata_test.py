@@ -1,10 +1,10 @@
 import unittest
-from logic import cave_generator
+from logic import dungeon_generation
 from logic import cellular_automata
 
 class TestCellularAutomata(unittest.TestCase):
 	def setUp(self):
-		self.cg = cave_generator.CaveGenerator()
+		self.cg = dungeon_generation.DungeonGenerator()
 		self.cg.map = [[" ", "#", " "],  ["#", " ", "#"], [" ", "#", " "]]
 
 	def test_wall_count(self):

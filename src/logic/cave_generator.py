@@ -1,3 +1,5 @@
+# pylint: disable-all
+
 import random
 import settings.config
 import logic.perlin_noise
