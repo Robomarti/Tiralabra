@@ -48,7 +48,7 @@ def config(ctx, length, width, floor):
 
 def get_configs_from_text():
 	"""Returns the values in the config.txt file"""
-	with open("src/settings/config.txt", "r") as text:
+	with open("src/settings/config.txt", "r", encoding="utf8") as text:
 		lines = text.readlines()
 		length = int(lines[0].split(' ')[2])
 		width = int(lines[1].split(' ')[2])

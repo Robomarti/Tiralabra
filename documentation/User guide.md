@@ -1,4 +1,4 @@
-#Set up guide:
+# Set up guide:
 
 You can have virtualenv installed by using pip install virtualenv. This might make easier to remove unnecessary
 dependencies after testing my application.
@@ -19,7 +19,7 @@ pip install -r requirements.txt
 to install dependencies
 
 
-#Other commands:
+## Other commands:
 
 To change the configuration of the application use the command
 ```bash
@@ -49,6 +49,9 @@ So for example, to restore the original configurations, use the command
 ```bash
 invoke config --length 20 --width 20 --floor 0.4
 ```
+
+
+Note: the application does not work well with lenght and width of under 5 each.
 
 
 To test the app use the command 

@@ -1,3 +1,3 @@
 [run]
 source = src
-omit = src/**/__init__.py, src/tests/**, src/ui/**, src/index.py, src\pygame_essentials\clock.py, src\pygame_essentials\event_queue.py
+omit = src/**/__init__.py, src/tests/**, src/ui/**, src/index.py, src\pygame_essentials\clock.py, src\pygame_essentials\event_queue.py, src\logic\perlin_noise.py

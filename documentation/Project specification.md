@@ -18,7 +18,7 @@ A dungeon will be printed with print commands, after which the program asks whet
 Sources: https://www.roguebasin.com/index.php/Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels
 
 
-I am hoping for a time  complexity of the program to be close to O(n).
+I am hoping for a time  complexity of the program to be close to O(n) where n is the count of all cells on the map.
 
 
 My degree programme is Tietojenkäsittelytieteen kandidaatti

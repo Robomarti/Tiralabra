@@ -19,6 +19,11 @@ pip install -r requirements.txt
 to install dependencies
 
 
+To start the application, use
+```bash
+invoke start
+```
+
 #Other commands:
 
 To test the app use the command 
@@ -34,10 +39,13 @@ The command also executes all the tests required. The report will be generated t
 
 
 ## User guide:
-[User guide](documentation/User%20guide.md)
+[Here](documentation/User%20guide.md)
 
 
 ## Weekly reports:
 [Week 1 report](documentation/week%201%20report.md)
 
 [Week 2 report](documentation/week%202%20report.md)
+
+## Testing document:
+[Here](documentation/week%202%20report.md)
