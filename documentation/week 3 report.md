@@ -12,7 +12,7 @@ In the end my original "normal randomness cave generation with cellular automata
 After all this I remembered that I was supposed to be generating dungeons, so I used a method I found online. It is basically random room placement, but whenever it fails to find room
 for a room, it tries to place the new room further.
 
-I omitted perlin noise and cave generation from unittests, coverage-reports and pylint, since I don't use them in my application but I wanted to show them regardless in case anyone is curious about my progress.
+I omitted perlin noise and cave generation from unit tests, coverage-reports and pylint (code quality reporting tool), since I don't use them in my application but I wanted to show them regardless in case anyone is curious about my progress.
 
 Next week I will try to implement the room system and Delaunay triangulation to create potential pathways between the rooms.
 
