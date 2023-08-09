@@ -28,7 +28,6 @@ def generate_dungeon():
 	dg.generate_blank_map()
 	room_count = dg.room_generator.get_room_count()
 	for _ in range(room_count):
-		print(dg.room_generator.get_room_size())
 		dg.generate_room()
 	dg.print_map()
 

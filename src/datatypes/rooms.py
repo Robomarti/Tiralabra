@@ -8,3 +8,4 @@ class Rooms:
 	width: int
 	length: int
 	cells: list
+	center_point: Coordinates

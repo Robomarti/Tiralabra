@@ -4,6 +4,8 @@ from datatypes.coordinates import Coordinates
 from datatypes.rectangle import Rectangle
 from datatypes.rooms import Rooms
 
+random = random.Random()
+
 class RoomGenerator():
 	def __init__(self, length, width, tile_size):
 		self.length = length
@@ -11,9 +13,23 @@ class RoomGenerator():
 		self.tile_size = tile_size
 
 	def get_room_count(self):
+		"""Returns an integer using random math that I made up"""		
+
 		return math.floor(math.sqrt((self.length - 3) * (self.width - 3) / 4))
 
-	def get_random_point_in_circle(self, radius, center_x, center_y):
+	def get_radius_of_cirle(self):
+		length = self.length
+		width = self.width
+		if length < width:
+			smaller = length
+		else:
+			smaller = width
+		return math.floor(smaller / 2)
+
+	def get_random_point_in_circle(self, center_x, center_y):
+		"""Returns a random point in a circle"""
+
+		radius = self.get_radius_of_cirle()
 		r = radius * math.sqrt(random.random())
 		theta = 2 * math.pi * random.random()
 
@@ -22,7 +38,7 @@ class RoomGenerator():
 		return Coordinates(x_coordinate, y_coordinate)
 
 	def roundm(self, n, tile_size):
-		"""Rounds up coordinates so that it snaps to the grid made out of pixels"""
+		"""Rounds up coordinates so that it snaps to the dungeon map grid made out of pixels"""
 
 		return math.floor(((n + tile_size - 1) / tile_size)) * tile_size
 
@@ -38,73 +54,101 @@ class RoomGenerator():
 
 	def generate_room(self, game_map):
 		"""Generates a room to an empty place
+
 		Starting corner is offset by the scale of the room to be generated so that the whole room fits better to the map.
-		If the initial placement is not empty, it tries to find room from the direction that is given by 
-		the function get_away_direction()
+		
+		In the while loop, if the initial placement is not empty, it tries to find room from the direction that is given by 
+		the function get_away_direction(). If it can not find place for room there, selects another starting corner and
+		tries again.
 		"""
 
-		room_size = self.get_room_size()
-		width = int(self.width / 2)
-		length = int(self.length / 2)
-		starting_corner = self.get_random_point_in_circle(self.get_radius_of_cirle(), width, length)
-		starting_corner.x -= room_size.width
-		starting_corner.y -= room_size.length
+		moved = self.move_room_starting_point_if_necessary(game_map)
+		if moved:
+			room_size = moved[0]
+			starting_corner = moved[1]
 
-		direction = self.get_away_direction()
+			cells = self.create_room_tiles(room_size, starting_corner, game_map)
+			center_point = Coordinates(math.floor(len(cells[0]) / 2), math.floor(len(cells) / 2))
+			new_room = Rooms(starting_corner, len(cells[0]), len(cells), cells, center_point)
+			return new_room
+		else:
+			return (" ")
 
-		failed_attempts = 0
-		while not self.check_if_room(room_size, starting_corner, game_map):
-			if failed_attempts < 20:
-				failed_attempts += 1
-				starting_corner.x += direction.x
-				starting_corner.y += direction.y
-			else:
-				starting_corner = self.get_random_point_in_circle(self.get_radius_of_cirle(), width, length)
-				starting_corner.x -= room_size.width
-				starting_corner.y -= room_size.length
-				failed_attempts = 0
-
-		cells = self.create_room(room_size, starting_corner, game_map)
-		new_room = Rooms(starting_corner, len(cells[0]), len(cells), cells)
-		return new_room
-
-	def create_room(self, room_size: Rectangle, starting_corner: Coordinates, game_map):
+	def create_room_tiles(self, room_size: Rectangle, starting_corner: Coordinates, game_map):
 		cells = []
 		for y_coordinate in range(starting_corner.y, starting_corner.y + room_size.length):
 			row = []
 			for x_coordinate in range(starting_corner.x, starting_corner.x + room_size.width):
-				if y_coordinate in range(1, len(game_map)-1) \
-				and x_coordinate in range(1, len(game_map[y_coordinate])-1) \
-				and game_map[y_coordinate][x_coordinate] == "#":
-					game_map[y_coordinate][x_coordinate] = " "
-					row.append((x_coordinate,y_coordinate))
+				game_map[y_coordinate][x_coordinate] = " "
+				row.append((x_coordinate,y_coordinate))
 			cells.append(row)
 		return cells
 
+	def move_room_starting_point_if_necessary(self, game_map):
+		room_size = self.get_room_size()
+		width = int(self.width / 2)
+		length = int(self.length / 2)
+		starting_corner = self.get_starting_corner(room_size, width, length)
+		while starting_corner.x <= 0 or starting_corner.y <= 0:
+			starting_corner = self.get_starting_corner(room_size, width, length)
+		away_direction = self.get_away_direction()
+
+		failed_attempts = 0
+		while not self.check_if_room(room_size, starting_corner, game_map):
+			failed_attempts += 1
+			if failed_attempts < 20:
+				starting_corner.x += away_direction.x
+				starting_corner.y += away_direction.y
+				if starting_corner.x + room_size.width >= len(game_map[0]) or starting_corner.y + room_size.length >= len(game_map):
+					failed_attempts = 20
+			else:
+				return None
+
+		return (room_size,starting_corner)
+
+	def get_starting_corner(self, room_size, width, length):
+		starting_corner = self.get_random_point_in_circle(width, length)
+		starting_corner.x -= room_size.width
+		starting_corner.y -= room_size.length
+		return starting_corner
+		
 	def check_if_room(self, room_size: Rectangle, starting_corner: Coordinates, game_map):
 		"""Checks if there is room for a room
 		
 		Returns false if there is no room for a room or there is room for a room, but the room would be less than 3 wide or less than 3 long.
-		"""		
+		"""
 
-		for y in range(starting_corner.y-1, starting_corner.y + room_size.length+1):
-			if y not in range(len(game_map)) and starting_corner.y < 3:
-				return False
-			for x in range(starting_corner.x-1, starting_corner.x + room_size.width+1):
-				if y in range(len(game_map)) and x in range(len(game_map[0])) and game_map[y][x] != "#":
-					return False
-				if x not in range(len(game_map[0])) and starting_corner.x < 3:
+		if starting_corner.x <= 0 or starting_corner.y <= 0:
+			return False
+		if starting_corner.x + room_size.width >= len(game_map[0])-1 or starting_corner.y + room_size.length >= len(game_map)-1:
+			return False
+
+		checking_area = [starting_corner.x-1,starting_corner.y-1,starting_corner.x+room_size.width+1,starting_corner.y+room_size.length+1]
+
+		#first check if the room is next to the border of the map
+		if starting_corner.x == 1: #left border
+			checking_area[0] += 1
+		if starting_corner.y == 1: #upper border
+			checking_area[1] += 1
+		if starting_corner.x + room_size.width >= len(game_map[0])-2: #right border
+			checking_area[2] = len(game_map[0])-2
+		if starting_corner.y + room_size.length >= len(game_map)-2: #lower border
+			checking_area[3] = len(game_map)-2
+		
+
+
+		if checking_area[0] + checking_area[2] < 3:
+			return False
+		if checking_area[1] + checking_area[3] < 3:
+			return False
+		
+		for y in range(checking_area[1], checking_area[3]): #from upper border to lower border
+			
+			for x in range(checking_area[0], checking_area[2]): #from left border to right border
+				
+				if game_map[y][x] != "#":
 					return False
 		return True
-
-	def get_radius_of_cirle(self):
-		length = self.length
-		width = self.width
-		if length < width:
-			smaller = length
-		else:
-			smaller = width
-		return math.floor(smaller / 2)
 
 	def get_away_direction(self):
 		"""Returns the direction where the room should head when there is not room for it
