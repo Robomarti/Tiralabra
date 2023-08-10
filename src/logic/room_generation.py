@@ -68,8 +68,8 @@ class RoomGenerator():
 			starting_corner = moved[1]
 
 			cells = self.create_room_tiles(room_size, starting_corner, game_map)
-			center_point = Coordinates(math.floor(len(cells[0]) / 2), math.floor(len(cells) / 2))
-			new_room = Rooms(starting_corner, len(cells[0]), len(cells), cells, center_point)
+			center_point = Coordinates(starting_corner.x + math.floor(len(cells[0]) / 2), starting_corner.y + math.floor(len(cells) / 2))
+			new_room = Rooms(starting_corner, center_point, cells, [])
 			return new_room
 		else:
 			return (" ")
@@ -94,6 +94,7 @@ class RoomGenerator():
 		away_direction = self.get_away_direction()
 
 		failed_attempts = 0
+		big_failures = 0
 		while not self.check_if_room(room_size, starting_corner, game_map):
 			failed_attempts += 1
 			if failed_attempts < 20:
@@ -101,12 +102,20 @@ class RoomGenerator():
 				starting_corner.y += away_direction.y
 				if starting_corner.x + room_size.width >= len(game_map[0]) or starting_corner.y + room_size.length >= len(game_map):
 					failed_attempts = 20
+					big_failures += 1
+			elif big_failures < 10:
+				failed_attempts = 0
+				room_size = self.get_room_size()
+				starting_corner = self.get_starting_corner(room_size, width, length)
+				while starting_corner.x <= 0 or starting_corner.y <= 0:
+					starting_corner = self.get_starting_corner(room_size, width, length)
+				away_direction = self.get_away_direction()
 			else:
 				return None
 
 		return (room_size,starting_corner)
 
-	def get_starting_corner(self, room_size, width, length):
+	def get_starting_corner(self, room_size: Rectangle, width, length):
 		starting_corner = self.get_random_point_in_circle(width, length)
 		starting_corner.x -= room_size.width
 		starting_corner.y -= room_size.length
@@ -155,7 +164,7 @@ class RoomGenerator():
 		in its original position. The direction will be chosen randomly.
 		"""
 
-		direction_chance = random.random()
+		direction_chance = float(random.random())
 
 		if direction_chance > 0.75:
 			direction = Coordinates(-1,-1)

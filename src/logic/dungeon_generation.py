@@ -1,5 +1,4 @@
 import settings.config
-import logic.cellular_automata
 import logic.room_generation
 
 class DungeonGenerator:
@@ -30,8 +29,13 @@ class DungeonGenerator:
 			print(" ".join(row))
 		print()
 
-	def smoothen(self):
-		logic.cellular_automata.cellular_automata(self.map, self.length, self.width)
+	def print_rooms(self):
+		"""Prints every room of the map instead of all rooms at once, so that it is more readable"""
+
+		print()
+		for room in self.rooms:
+			print(room)
+		print()
 
 	def create_walls(self):
 		"""Creates a border of walls around the map

@@ -5,7 +5,6 @@ from datatypes.coordinates import Coordinates
 class Rooms:
 	"""A class for a custom datatype Rooms represents a generated room inside the dungeon"""
 	starting_coordinate: Coordinates
-	width: int
-	length: int
-	cells: list
 	center_point: Coordinates
+	cells: list
+	connected_rooms: list

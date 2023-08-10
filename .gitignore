@@ -5,3 +5,6 @@ __pycache__
 .coverage
 htmlcov
 notes.txt
+cave_generator.py
+cellular_automata.py
+perlin_noise.py
