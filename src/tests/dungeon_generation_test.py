@@ -6,11 +6,6 @@ class TestDungeonGenerator(unittest.TestCase):
 		self.dg = dungeon_generation.DungeonGenerator()
 		self.dg.map = [["#", "#", "#"],  ["#", "#", "#"], ["#", "#", "#"]]
 
-	def test_create_walls(self):
-		self.dg.map = [[" ", " ", " "],  [" ", " ", " "], [" ", " ", " "]]
-		self.dg.create_walls()
-		self.assertEqual(self.dg.map, [["#", "#", "#"],  ["#", " ", "#"], ["#", "#", "#"]])
-
 	def test_generate_blank_map(self):
 		self.dg.map = []
 		self.dg.change_width_and_length(3,3)

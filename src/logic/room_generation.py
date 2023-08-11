@@ -69,10 +69,9 @@ class RoomGenerator():
 
 			cells = self.create_room_tiles(room_size, starting_corner, game_map)
 			center_point = Coordinates(starting_corner.x + math.floor(len(cells[0]) / 2), starting_corner.y + math.floor(len(cells) / 2))
-			new_room = Rooms(starting_corner, center_point, cells, [])
+			new_room = Rooms(starting_corner, center_point, cells, [], 0)
 			return new_room
-		else:
-			return (" ")
+		return (" ")
 
 	def create_room_tiles(self, room_size: Rectangle, starting_corner: Coordinates, game_map):
 		cells = []
@@ -143,18 +142,16 @@ class RoomGenerator():
 			checking_area[2] = len(game_map[0])-2
 		if starting_corner.y + room_size.length >= len(game_map)-2: #lower border
 			checking_area[3] = len(game_map)-2
-		
-
 
 		if checking_area[0] + checking_area[2] < 3:
 			return False
 		if checking_area[1] + checking_area[3] < 3:
 			return False
-		
+
 		for y in range(checking_area[1], checking_area[3]): #from upper border to lower border
-			
+
 			for x in range(checking_area[0], checking_area[2]): #from left border to right border
-				
+
 				if game_map[y][x] != "#":
 					return False
 		return True

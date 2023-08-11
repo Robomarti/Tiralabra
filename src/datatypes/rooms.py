@@ -8,3 +8,4 @@ class Rooms:
 	center_point: Coordinates
 	cells: list
 	connected_rooms: list
+	delaunay_value: int

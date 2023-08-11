@@ -8,6 +8,9 @@ def generate_dungeon():
 	for _ in range(room_count):
 		dg.generate_room()
 	dg.print_map()
-	dg.print_rooms()
+
+	dg.generate_distances(dg.rooms)
+	for distance in dg.distances:
+		print(distance)
 
 generate_dungeon()
