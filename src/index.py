@@ -9,8 +9,13 @@ def generate_dungeon():
 		dg.generate_room()
 	dg.print_map()
 
-	dg.generate_distances(dg.rooms)
-	for distance in dg.distances:
-		print(distance)
+	dg.delaunay.add_rooms(dg.rooms)
+	dg.delaunay.generate_distances(dg.rooms)
+	dg.delaunay.connect_points()
+	print()
+	dg.get_edges()
+	dg.connect_rooms()
+	dg.print_map()
+	dg.print_paths()
 
 generate_dungeon()

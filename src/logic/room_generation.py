@@ -52,7 +52,7 @@ class RoomGenerator():
 		room_length = random.randint(3, int(self.length / (room_count - 1)) * 2)
 		return Rectangle(room_width, room_length)
 
-	def generate_room(self, game_map):
+	def generate_room(self, game_map: list):
 		"""Generates a room to an empty place
 
 		Starting corner is offset by the scale of the room to be generated so that the whole room fits better to the map.
@@ -69,11 +69,12 @@ class RoomGenerator():
 
 			cells = self.create_room_tiles(room_size, starting_corner, game_map)
 			center_point = Coordinates(starting_corner.x + math.floor(len(cells[0]) / 2), starting_corner.y + math.floor(len(cells) / 2))
-			new_room = Rooms(starting_corner, center_point, cells, [], 0)
+			new_room = Rooms(center_point, cells, [])
 			return new_room
 		return (" ")
 
-	def create_room_tiles(self, room_size: Rectangle, starting_corner: Coordinates, game_map):
+	def create_room_tiles(self, room_size: Rectangle, starting_corner: Coordinates, game_map: list):
+		"""Replaces the # tiles in the map with spaces"""
 		cells = []
 		for y_coordinate in range(starting_corner.y, starting_corner.y + room_size.length):
 			row = []
@@ -83,7 +84,9 @@ class RoomGenerator():
 			cells.append(row)
 		return cells
 
-	def move_room_starting_point_if_necessary(self, game_map):
+	def move_room_starting_point_if_necessary(self, game_map: list):
+		"""Checks whether the room has an empty place to be placed in.
+		If not, moves the room to a random direction"""
 		room_size = self.get_room_size()
 		width = int(self.width / 2)
 		length = int(self.length / 2)
