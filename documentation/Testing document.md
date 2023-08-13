@@ -23,6 +23,7 @@ I have also tested that the function that tells whether there is room for a room
 
 
 I tested how long the code takes to execute with different room sizes. For this I used Python's built-in profilers. Here is the execution speed test data.
+
 ![Time chart](https://github.com/Robomarti/Tiralabra/blob/main/documentation/images/time_chart.png)
 ![Time graph](https://github.com/Robomarti/Tiralabra/blob/main/documentation/images/time_graph.png)
 

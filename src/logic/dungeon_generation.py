@@ -36,29 +36,9 @@ class DungeonGenerator:
 
 	def get_paths(self):
 		"""Sets the paths to be the edges that the delaunay component has"""
-		self.paths = self.delaunay.edges
+		self.paths = self.delaunay.get_paths()
 
-	def print_map(self):
-		"""Prints every row of the map instead of the whole map at once, so that it is more readable"""
 
-		print()
-		for row in self.map:
-			print(" ".join(row))
-		print()
-
-	def print_rooms(self):
-		"""Prints every room of the map instead of all rooms at once, so that it is more readable"""
-		print()
-		for room in self.rooms:
-			print(room)
-		print()
-
-	def print_paths(self):
-		"""Prints every room of the map instead of all rooms at once, so that it is more readable"""
-		print()
-		for path in self.paths:
-			print(path)
-		print()
 
 	def connect_rooms(self, paths: list[tuple]):
 		"""Adds paths between the centers of the rooms"""
@@ -99,6 +79,24 @@ class DungeonGenerator:
 					self_room.connected_rooms.append(coordinates)
 					remove_duplicates(self_room)
 
-	def change_width_and_length(self, width, length):
-		self.width = width
-		self.length = length
+	def print_map(self):
+		"""Prints every row of the map instead of the whole map at once, so that it is more readable"""
+
+		print()
+		for row in self.map:
+			print(" ".join(row))
+		print()
+
+	def print_rooms(self):
+		"""Prints every room of the map instead of all rooms at once, so that it is more readable"""
+		print()
+		for room in self.rooms:
+			print(room)
+		print()
+
+	def print_paths(self):
+		"""Prints every path between cells"""
+		print()
+		for path in self.paths:
+			print(path)
+		print()

@@ -1,7 +1,7 @@
 The topic of the project is dungeon generation. I will use python to generate dungeon layouts with a multi-step process.
 
 
-I will generate the initial 2d dungeon layouts with random selection of cells. Then I will start reforming the map using random room placement algorithm. I will try to use it so that it only leaves unconnected rooms. During or after that I will mark every unconnected cave / room maybe by simply going over every pixel. Then I will connect unconnected rooms with the Bresenham's line algorithm or the Delaunay triangulation and modified Depth-first search to find the longest path between rooms.
+I will generate the initial 2d dungeon layouts with random selection of cells. Then I will start reforming the map using random room placement algorithm. I will try to use it so that it only leaves unconnected rooms. During or after that I will mark every unconnected cave / room maybe by simply going over every pixel. Then I will connect unconnected rooms with the Delaunay triangulation and modified Depth-first search to find the longest path between rooms.
 I might also color the different rooms with different colors with flood fill. I will then use a modified Depth-first search to find the longest path between a starting room
 and the furthest room and mark them as the start / end rooms.
 
@@ -16,7 +16,13 @@ A dungeon will be printed with print commands, after which the program asks whet
 
 Sources:
 
-https://www.gamedeveloper.com/programming/procedural-dungeon-generation-algorithm 
+https://www.gamedeveloper.com/programming/procedural-dungeon-generation-algorithm
+
+http://www.geom.uiuc.edu/~samuelp/del_project.html
+
+https://stackoverflow.com/questions/71168274/create-custom-data-type-in-python 
+
+https://math.stackexchange.com/questions/198764/how-to-know-if-a-point-is-inside-a-circle
 
 https://en.wikipedia.org/wiki/Delaunay_triangulation 
 

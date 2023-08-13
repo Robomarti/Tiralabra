@@ -107,8 +107,8 @@ class RoomGenerator():
 				starting_corner.y += away_direction.y
 				if starting_corner.x + room_size.width >= len(game_map[0]) or starting_corner.y + room_size.length >= len(game_map):
 					failed_attempts = 20
-					big_failures += 1
 			elif big_failures < 10:
+				big_failures += 1
 				failed_attempts = 0
 				room_size = self.get_room_size()
 				starting_corner = self.get_starting_corner(room_size, width, length)
