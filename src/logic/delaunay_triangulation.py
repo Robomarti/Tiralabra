@@ -1,6 +1,5 @@
-from datatypes.rooms import Rooms
-from datatypes.coordinates import Coordinates
 from math import sqrt, inf
+from datatypes.rooms import Rooms
 
 class DelaunayTriangulation:
 	def __init__(self):
@@ -25,21 +24,24 @@ class DelaunayTriangulation:
 				if i != j:
 					distance_of_points = self.distance_of_two_points_without_sqrt(rooms[i], rooms[j])
 					if distance_of_points < distances[0][0]:
-						distances[0] = (distance_of_points, (rooms[j].center_point.x,rooms[j].center_point.y))
+						j_coordinates = (rooms[j].center_point.x, rooms[j].center_point.y)
+						distances[0] = (distance_of_points, j_coordinates)
 					elif distance_of_points < distances[1][0]:
-						distances[1] = (distance_of_points, (rooms[j].center_point.x,rooms[j].center_point.y))
-			coordinates = (rooms[i].center_point.x,rooms[i].center_point.y)
+						j_coordinates = (rooms[j].center_point.x, rooms[j].center_point.y)
+						distances[1] = (distance_of_points, j_coordinates)
 
-			if not (distances[0][1],coordinates) in self.points:
+			coordinates = (rooms[i].center_point.x, rooms[i].center_point.y)
+
+			if (distances[0][1],coordinates) not in self.points:
 				self.points[(coordinates,distances[0][1])] = 0
-			if not (distances[1][1],coordinates) in self.points:
+			if (distances[1][1],coordinates) not in self.points:
 				self.points[(coordinates,distances[1][1])] = 0
-			if not (distances[1][1],distances[0][1]) in self.points:
+			if (distances[1][1],distances[0][1]) not in self.points:
 				self.points[(distances[0][1],distances[1][1])] = 0
 
 	def distance_of_two_points(self, point1: Rooms, point2: Rooms):
 		return sqrt((point2.center_point.x - point1.center_point.x)**2 + (point2.center_point.y - point1.center_point.y)**2)
-	
+
 	def distance_of_two_points_without_sqrt(self, point1: Rooms, point2: Rooms):
 		return (point2.center_point.x - point1.center_point.x)**2 + (point2.center_point.y - point1.center_point.y)**2
 
@@ -47,8 +49,7 @@ class DelaunayTriangulation:
 		"""Creates triangles from each point and its 2 nearest points"""
 		for key in self.points:
 			self.edges.append(key)
-			
-	
+
 	def print_edges(self):
 		for edge in self.edges:
 			print(edge)

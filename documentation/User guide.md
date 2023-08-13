@@ -38,20 +38,14 @@ This will be the length of the generated cave, measured in cells. Input a positi
 This will be the width of the generated cave, measured in cells. Input a positive integer.
 
 
-```bash
---floor float_here
-```
-This will be the chance that a cell will be initally a floor tile. Input a positive floating point number between 1 and 0.
-
-
 So for example, to restore the original configurations, use the command
 
 ```bash
-invoke config --length 20 --width 20 --floor 0.4
+invoke config --length 20 --width 20
 ```
 
 
-Note: the application does not work well with lenght and width of under 5 each.
+Note: the application does not work well with lenght and width of 16 or less for each. Please make sure that length and width are at least 17.
 
 
 To test the app use the command 

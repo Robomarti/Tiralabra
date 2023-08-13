@@ -2,6 +2,7 @@ import unittest
 from logic import room_generation
 from datatypes.coordinates import Coordinates
 from datatypes.rectangle import Rectangle
+from datatypes.coordinates import Coordinates
 from unittest.mock import patch
 import random
 
@@ -9,8 +10,8 @@ class TestRoomGenerator(unittest.TestCase):
 	def setUp(self):
 		self.room_generator = room_generation.RoomGenerator(3,3,1)
 		self.map = [["#", "#", "#"],  ["#", "#", "#"], ["#", "#", "#"]]
-		self.room_size = Rectangle(3,3)
 		self.starting_corner = Coordinates(0,0)
+		self.room_size = Rectangle(3,3)
 		self.room_generator.length = 10
 		self.room_generator.width = 8
 
@@ -57,3 +58,7 @@ class TestRoomGenerator(unittest.TestCase):
 	def test_get_away_direction(self, mock_random):
 		away_direction = self.room_generator.get_away_direction()
 		self.assertEqual(away_direction, Coordinates(-1,-1))
+
+	def test_get_center_point(self):
+		center = self.room_generator.get_center_point(self.starting_corner, self.room_size)
+		self.assertEqual(center, Coordinates(1,1))

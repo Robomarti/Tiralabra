@@ -18,6 +18,7 @@ class RoomGenerator():
 		return math.floor(math.sqrt((self.length - 3) * (self.width - 3) / 4))
 
 	def get_radius_of_cirle(self):
+		"""Return the radius of a circle drawn inside of the game map"""
 		length = self.length
 		width = self.width
 		if length < width:
@@ -68,20 +69,22 @@ class RoomGenerator():
 			starting_corner = moved[1]
 
 			cells = self.create_room_tiles(room_size, starting_corner, game_map)
-			center_point = Coordinates(starting_corner.x + math.floor(len(cells[0]) / 2), starting_corner.y + math.floor(len(cells) / 2))
+			center_point = self.get_center_point(starting_corner, room_size)
 			new_room = Rooms(center_point, cells, [])
 			return new_room
-		return (" ")
+		return " "
+
+	def get_center_point(self, starting_corner: Coordinates, room_size: Rectangle):
+		"""Returns a center point of a room in Coordinates form"""
+		return Coordinates(starting_corner.x + math.floor(room_size.width / 2), starting_corner.y + math.floor(room_size.length / 2))
 
 	def create_room_tiles(self, room_size: Rectangle, starting_corner: Coordinates, game_map: list):
 		"""Replaces the # tiles in the map with spaces"""
 		cells = []
 		for y_coordinate in range(starting_corner.y, starting_corner.y + room_size.length):
-			row = []
 			for x_coordinate in range(starting_corner.x, starting_corner.x + room_size.width):
 				game_map[y_coordinate][x_coordinate] = " "
-				row.append((x_coordinate,y_coordinate))
-			cells.append(row)
+				cells.append((x_coordinate,y_coordinate))
 		return cells
 
 	def move_room_starting_point_if_necessary(self, game_map: list):
@@ -122,7 +125,7 @@ class RoomGenerator():
 		starting_corner.x -= room_size.width
 		starting_corner.y -= room_size.length
 		return starting_corner
-		
+
 	def check_if_room(self, room_size: Rectangle, starting_corner: Coordinates, game_map):
 		"""Checks if there is room for a room
 		
