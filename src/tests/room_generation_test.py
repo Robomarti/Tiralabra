@@ -15,9 +15,11 @@ class TestRoomGenerator(unittest.TestCase):
 		self.room_generator.length = 10
 		self.room_generator.width = 8
 
-	def test_room_count(self):
+	@patch('logic.room_generation.random.randint')
+	def test_room_count(self, mock_random):
+		mock_random.return_value = 4
 		room_count = self.room_generator.get_room_count()
-		self.assertEqual(room_count, 2)
+		self.assertEqual(room_count, 4)
 
 	@patch('logic.room_generation.random.randint')
 	def test_get_room_size(self, mock_random):

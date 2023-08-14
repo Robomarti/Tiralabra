@@ -15,7 +15,9 @@ class RoomGenerator():
 	def get_room_count(self):
 		"""Returns an integer using random math that I made up"""		
 
-		return math.floor(math.sqrt((self.length - 3) * (self.width - 3) / 4))
+		minimum = max(3, math.floor(self.width * self.length / 100))
+
+		return random.randint(minimum, math.floor(math.sqrt((self.length - 3) * (self.width - 3) / 4)))
 
 	def get_radius_of_cirle(self):
 		"""Return the radius of a circle drawn inside of the game map"""
@@ -56,12 +58,12 @@ class RoomGenerator():
 	def generate_room(self, game_map: list):
 		"""Generates a room to an empty place
 
-		Starting corner is offset by the scale of the room to be generated so that the whole room fits better to the map.
+		Starting corner is offset by the scale of the room to be generated so that the whole room
+		fits better to the map.
 		
-		In the while loop, if the initial placement is not empty, it tries to find room from the direction that is given by 
-		the function get_away_direction(). If it can not find place for room there, selects another starting corner and
-		tries again.
-		"""
+		In the while loop, if the initial placement is not empty, it tries to find room from the
+		direction that is given by the function get_away_direction(). If it can not find place for
+		room there, selects another starting corner and tries again."""
 
 		moved = self.move_room_starting_point_if_necessary(game_map)
 		if moved:
@@ -76,7 +78,9 @@ class RoomGenerator():
 
 	def get_center_point(self, starting_corner: Coordinates, room_size: Rectangle):
 		"""Returns a center point of a room in Coordinates form"""
-		return Coordinates(starting_corner.x + math.floor(room_size.width / 2), starting_corner.y + math.floor(room_size.length / 2))
+		x_coordinate = starting_corner.x + math.floor(room_size.width / 2)
+		y_coordinate = starting_corner.y + math.floor(room_size.length / 2)
+		return Coordinates(x_coordinate, y_coordinate)
 
 	def create_room_tiles(self, room_size: Rectangle, starting_corner: Coordinates, game_map: list):
 		"""Replaces the # tiles in the map with spaces"""
@@ -129,15 +133,16 @@ class RoomGenerator():
 	def check_if_room(self, room_size: Rectangle, starting_corner: Coordinates, game_map):
 		"""Checks if there is room for a room
 		
-		Returns false if there is no room for a room or there is room for a room, but the room would be less than 3 wide or less than 3 long.
-		"""
+		Returns false if there is no room for a room or there is room for a room, but the room
+		would be less than 3 wide or less than 3 long."""
 
 		if starting_corner.x <= 0 or starting_corner.y <= 0:
 			return False
 		if starting_corner.x + room_size.width >= len(game_map[0])-1 or starting_corner.y + room_size.length >= len(game_map)-1:
 			return False
 
-		checking_area = [starting_corner.x-1,starting_corner.y-1,starting_corner.x+room_size.width+1,starting_corner.y+room_size.length+1]
+		checking_area = [starting_corner.x-1, starting_corner.y-1, \
+		   				starting_corner.x+room_size.width+1, starting_corner.y+room_size.length+1]
 
 		#first check if the room is next to the border of the map
 		if starting_corner.x == 1: #left border

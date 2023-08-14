@@ -12,7 +12,6 @@ class DungeonGenerator:
 		self.width = settings.config.WIDTH
 		tile_size = 1
 		self.room_generator = logic.room_generation.RoomGenerator(self.length, self.width, tile_size)
-		self.delaunay = logic.delaunay_triangulation.DelaunayTriangulation()
 
 	def generate_blank_map(self):
 		"""Initializes the map.
@@ -29,16 +28,16 @@ class DungeonGenerator:
 		if isinstance(room, Rooms):
 			self.rooms.append(room)
 
-	def init_can_access(self):
-		for room in self.rooms:
-			coordinates = (room.center_point.x,room.center_point.y)
-			self.can_access[coordinates] = []
-
-	def get_paths(self):
+	def start_delaunay(self):
 		"""Sets the paths to be the edges that the delaunay component has"""
-		self.paths = self.delaunay.get_paths()
-
-
+		points = []
+		for room in self.rooms:
+			points.append(room.center_point)
+		delaunay = logic.delaunay_triangulation.delaunay_triangulation(points,self.width,self.length)
+		for triangle in delaunay:
+			for edge in triangle.edges:
+				self.paths.append(((edge[0].x,edge[0].y), (edge[1].x,edge[1].y)))
+		print(self.paths)
 
 	def connect_rooms(self, paths: list[tuple]):
 		"""Adds paths between the centers of the rooms"""
@@ -66,7 +65,8 @@ class DungeonGenerator:
 					self.map[y_coordinate][path[1][0]] = "."
 				else:
 					if not is_own_room((path[1][0],y_coordinate), path[0], self.rooms):
-						if (path[1][0],y_coordinate) not in visited: #in case that previous for loop added the cell to visited
+						# an extra if, in case that previous for loop added the cell to visited
+						if (path[1][0],y_coordinate) not in visited:
 							visited.append((path[1][0],y_coordinate))
 
 			visited_founds = []
