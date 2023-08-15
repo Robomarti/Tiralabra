@@ -2,6 +2,7 @@ import settings.config
 import logic.room_generation
 import logic.delaunay_triangulation
 from datatypes.rooms import Rooms, find_room_by_cell, remove_duplicates, is_own_room
+import logic.maximum_spanning_tree
 
 class DungeonGenerator:
 	def __init__(self):
@@ -31,17 +32,33 @@ class DungeonGenerator:
 	def start_delaunay(self):
 		"""Sets the paths to be the edges that the delaunay component has"""
 		points = []
+		points_used = {}
 		for room in self.rooms:
 			points.append(room.center_point)
-		delaunay = logic.delaunay_triangulation.delaunay_triangulation(points,self.width,self.length)
+			points_used[(room.center_point.x, room.center_point.y)] = False
+
+		delaunay = logic.delaunay_triangulation.delaunay_triangulation(points, self.width, self.length)
 		for triangle in delaunay:
 			for edge in triangle.edges:
 				self.paths.append(((edge[0].x,edge[0].y), (edge[1].x,edge[1].y)))
-		print(self.paths)
+				points_used[(edge[0].x, edge[0].y)] = True
+				points_used[(edge[1].x, edge[1].y)] = True
+
+		used_count = 0
+		for key in points_used:
+			if points_used[key] == True:
+				used_count += 1
+		print()
+		if used_count != len(points):
+			print("used in delaunay:", points_used)
+			print()
+			print("room count was", len(points),"while used count was", used_count, ". This means that delaunay triangulation was not succesfull in connecting every room")
+		p = logic.maximum_spanning_tree.Prim(self.paths)
 
 	def connect_rooms(self, paths: list[tuple]):
 		"""Adds paths between the centers of the rooms"""
 		for path in paths:
+			self.map[path[0][1]][path[0][0]] = "x"
 			visited = []
 			if path[0][0] < path[1][0]:
 				x_direction = 1

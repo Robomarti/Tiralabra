@@ -7,11 +7,11 @@ cleaned a little.
 In addition to that, I fixed the bug that https://stackoverflow.com/users/11306106/giveme30dollars 
 asked about their code in their original post"""
 
-def delaunay_triangulation(points,width,height) -> list[Triangle]:
+def delaunay_triangulation(points, width, length) -> list[Triangle]:
 	triangulation = []
-	st_point1 = Coordinates(-100,-100)
-	st_point2 = Coordinates(2*width+100,-100)
-	st_point3 = Coordinates(-100,2*height+100)
+	st_point1 = Coordinates(int(width / 2), -length*2)
+	st_point2 = Coordinates(3*width, length*2)
+	st_point3 = Coordinates(-2*width, length*2)
 	super_triangle = Triangle(st_point1,st_point2,st_point3)
 	triangulation.append(super_triangle)
 

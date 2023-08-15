@@ -11,27 +11,22 @@ class RoomGenerator():
 		self.length = length
 		self.width = width
 		self.tile_size = tile_size
+		self.room_count = self.get_room_count()
 
 	def get_room_count(self):
 		"""Returns an integer using random math that I made up"""		
-
-		minimum = max(3, math.floor(self.width * self.length / 100))
-
-		return random.randint(minimum, math.floor(math.sqrt((self.length - 3) * (self.width - 3) / 4)))
+		minimum = max(3,math.floor(self.width * self.length / 200))
+		maximum = max(4, math.floor(self.width * self.length / 100))
+		return random.randint(minimum, maximum)
 
 	def get_radius_of_cirle(self):
 		"""Return the radius of a circle drawn inside of the game map"""
-		length = self.length
-		width = self.width
-		if length < width:
-			smaller = length
-		else:
-			smaller = width
+		smaller = min(self.length, self.width)
+
 		return math.floor(smaller / 2)
 
 	def get_random_point_in_circle(self, center_x, center_y):
 		"""Returns a random point in a circle"""
-
 		radius = self.get_radius_of_cirle()
 		r = radius * math.sqrt(random.random())
 		theta = 2 * math.pi * random.random()
@@ -42,7 +37,6 @@ class RoomGenerator():
 
 	def roundm(self, n, tile_size):
 		"""Rounds up coordinates so that it snaps to the dungeon map grid made out of pixels"""
-
 		return math.floor(((n + tile_size - 1) / tile_size)) * tile_size
 
 	def get_room_size(self):
@@ -50,9 +44,8 @@ class RoomGenerator():
 		The maximum length and width are calculated with some random math I made up
 		Room size is given in a rectangles width and length"""
 
-		room_count = self.get_room_count()
-		room_width = random.randint(3, int(self.width / (room_count - 1)) * 2)
-		room_length = random.randint(3, int(self.length / (room_count - 1)) * 2)
+		room_width = random.randint(3, max(3,self.width // math.sqrt(self.room_count)))
+		room_length = random.randint(3, max(3, self.length // math.sqrt(self.room_count)))
 		return Rectangle(room_width, room_length)
 
 	def generate_room(self, game_map: list):
@@ -95,8 +88,8 @@ class RoomGenerator():
 		"""Checks whether the room has an empty place to be placed in.
 		If not, moves the room to a random direction"""
 		room_size = self.get_room_size()
-		width = int(self.width / 2)
-		length = int(self.length / 2)
+		width = self.width // 2
+		length = self.length // 2
 		starting_corner = self.get_starting_corner(room_size, width, length)
 		while starting_corner.x <= 0 or starting_corner.y <= 0:
 			starting_corner = self.get_starting_corner(room_size, width, length)

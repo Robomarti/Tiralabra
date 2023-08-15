@@ -22,7 +22,7 @@ class Triangle:
 			return True
 		return False
 
-	def has_vertex(self,point: Coordinates):
+	def has_vertex(self, point: Coordinates):
 		if point in (self.corner1, self.corner2, self.corner3):
 			return True
 		return False
@@ -37,6 +37,8 @@ def circumcenter_of_triangle(point1: Coordinates, point2: Coordinates, point3: C
 	bd = point2.x **2 + point2.y **2
 	cd = point3.x **2 + point3.y **2
 	distance = 2 * (point1.x * (point2.y - point3.y) + point2.x * (point3.y - point1.y) + point3.x * (point1.y - point2.y))
+	if distance == 0:
+		distance = 0.1
 	x_coordinate = 1 / distance * (ad * (point2.y - point3.y) + bd * (point3.y - point1.y) + cd * (point1.y - point2.y))
 	y_coordinate = 1 / distance * (ad * (point3.x - point2.x) + bd * (point1.x - point3.x) + cd * (point2.x - point1.x))
 	return Coordinates(x_coordinate, y_coordinate)

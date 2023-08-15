@@ -5,7 +5,7 @@ this application is not meant to be used with values less than 10 anyway, so mig
 
 I pretty much copied the stackoverflow code
 
-hours: 6
+This week's progress took 9 hours.
 
 sources
 https://github.com/jmespadero/pyDelaunay2D
