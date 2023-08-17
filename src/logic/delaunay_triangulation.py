@@ -19,12 +19,14 @@ def delaunay_triangulation(point_list: list[Coordinates], width, length) -> list
 		polygon = []
 		for triangle in bad_triangles:
 			for edge in triangle.edges:
-				if edge_not_in_other_bad_triangles(edge, bad_triangles):
+				if edge_not_in_other_bad_triangles(triangle, edge, bad_triangles):
 					polygon.append(edge)
+
         #for each triangle in badTriangles do // remove them from the data structure
 		for i in range(len(bad_triangles)-1,-1,-1):
             #remove triangle from triangulation
 			triangulation.remove(bad_triangles[i])
+
         #for each edge in polygon do // re-triangulate the polygonal hole
 		for edge in polygon:
             #newTri := form a triangle from edge to point
@@ -32,16 +34,20 @@ def delaunay_triangulation(point_list: list[Coordinates], width, length) -> list
             #add newTri to triangulation
 			triangulation.append(new_triangle)
 
-	for triangle in triangulation:
+	for i in range(len(triangulation)-1,-1,-1):
         #if triangle contains a vertex from original super-triangle
-		if triangle.contains_vertex_from_super_triangle(super_triangle_1):
+		if triangulation[i].contains_vertex_from_super_triangle(super_triangle_1):
             #remove triangle from triangulation
-			triangulation.remove(triangle)
+			triangulation.remove(triangulation[i])
+		elif triangulation[i].contains_vertex_from_super_triangle(super_triangle_2):
+            #remove triangle from triangulation
+			triangulation.remove(triangulation[i])
 	return triangulation
 
-def edge_not_in_other_bad_triangles(edge, bad_triangles: list[Triangle]):
+def edge_not_in_other_bad_triangles(own_triangle, edge, bad_triangles: list[Triangle]):
 	edge2 = (edge[1], edge[0])
 	for triangle in bad_triangles:
-		if edge in triangle.edges or edge2 in triangle.edges:
-			return False
+		if triangle != own_triangle:
+			if edge in triangle.edges or edge2 in triangle.edges:
+				return False
 	return True

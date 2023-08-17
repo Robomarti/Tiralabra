@@ -9,12 +9,12 @@ class Prim:
 			if not edge[1] in vertices:
 				vertices.append(edge[1])
 
-		print()
-		print("vertices:", vertices)
-		self.distances = self.generate_distances(vertices, edges)
-		print()
-		print("distances:",self.distances)
-		print()
+		#print()
+		#print("vertices:", vertices)
+		#self.distances = self.generate_distances(vertices, edges)
+		#print()
+		#print("distances:",self.distances)
+		#print()
 
 	def generate_distances(self, vertices: list[tuple], edges: list[tuple]):
 		connections = {}

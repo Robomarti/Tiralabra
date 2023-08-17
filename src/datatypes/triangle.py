@@ -28,7 +28,7 @@ def distance(point1: Coordinates, point2: Coordinates):
 def circumcenter_of_triangle(point1: Coordinates, point2: Coordinates, point3: Coordinates):
 	"""Using distance formula?
 
-	Shameless copy of https://stackoverflow.com/q/58116412/16279075 that I reformed and 
+	I copied this function from https://stackoverflow.com/q/58116412/16279075 that I reformed and 
 	cleaned a little."""
 	ad = point1.x **2 + point1.y **2
 	bd = point2.x **2 + point2.y **2

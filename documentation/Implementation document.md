@@ -45,32 +45,33 @@ A image of the project structure:
 According to the testing data, time complexity seems to be O(n), where n is the amount of cells. Since the dungeon can be a rectangle too instead of just a square, another way of presenting the time complexity would be O(n*m) where n is the width of the map and m is the length of the map.
 
 
-### Delaunay triangulation
-
-My version of the Delaunay triangulation has a time complexity of O(n^2) where n is the count of all the rooms on the map. Proper implementations of the algorithm would work in O(n log n ) time.
-
-
-### Random room placement
+#### Random room placement
 
 My implementation of random room placement should pretty much have a time complexity of O(1), since it only has to check if there is room for a room and place the room. It tries at most 20*10 = 200 times to generate a new room until it gives up, so it could be also presented as a time complexity of O(200).
 
 
+#### Delaunay triangulation
+
+The Bowyer-Watson version of the Delaunay triangulation has a time complexity of O(n log n) where n is the count of all the rooms on the map. However, my implementation of it has a time complexity of O(n^2), since I wanted to prioritize completing the application first, instead of optimizing the algorithm.
+
+
+#### Prim's algorithm
+
+
 ## Possible flaws and improvements
 
-The application does not work well with lenght and width of 16 or less for each. This is probably because of the random math I created to choose the lengths and widths to rooms in the map. I will probably look into it, even though maps that are that small are pretty pointless to generate anyway.
+- The application does not work well with lenght and width of 13 or less for each, but maps that are that small are pretty pointless to generate anyway.
 
-Bigger maps still have small room sizes because their size depends on the room count.
 
-My Delaunay triangulation does not ensure that every part of the map in interconnected.
+- My implementation of the Bowyer-Watson algorithm could be improved for a time complexity of O(n log n).
 
 
 ## Sources:
-https://www.gamedeveloper.com/programming/procedural-dungeon-generation-algorithm
 
-http://www.geom.uiuc.edu/~samuelp/del_project.html
+https://www.gamedeveloper.com/programming/procedural-dungeon-generation-algorithm
 
 https://stackoverflow.com/questions/71168274/create-custom-data-type-in-python 
 
-https://math.stackexchange.com/questions/198764/how-to-know-if-a-point-is-inside-a-circle
+https://en.wikipedia.org/wiki/Bowyer%E2%80%93Watson_algorithm
 
 https://en.wikipedia.org/wiki/Delaunay_triangulation 

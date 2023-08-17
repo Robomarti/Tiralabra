@@ -38,7 +38,9 @@ class DungeonGenerator:
 			points_used[(room.center_point.x, room.center_point.y)] = False
 
 		delaunay = logic.delaunay_triangulation.delaunay_triangulation(points, self.width, self.length)
+		print()
 		for triangle in delaunay:
+			#print(triangle.edges)
 			for edge in triangle.edges:
 				self.paths.append(((edge[0].x,edge[0].y), (edge[1].x,edge[1].y)))
 				points_used[(edge[0].x, edge[0].y)] = True

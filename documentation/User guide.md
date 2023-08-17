@@ -45,7 +45,7 @@ invoke config --length 20 --width 20
 ```
 
 
-Note: the application does not work well with lenght and width of 16 or less for each. Please make sure that length and width are at least 17.
+Note: the application does not work well with width and length of 13 or less for each. Please make sure that width and length are at least 14. In my testings, only at width and length of 13 did the application spawn at least three rooms, and larger values result in a larger chance of obtaining a succesful dungeon generation.
 
 
 To test the app use the command 
