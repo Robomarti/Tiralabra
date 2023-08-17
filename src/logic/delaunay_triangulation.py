@@ -1,59 +1,47 @@
 from datatypes.coordinates import Coordinates
 from datatypes.triangle import Triangle
 
-"""Shameless copy of https://stackoverflow.com/q/58116412/16279075 that I reformed and 
-cleaned a little.
-
-In addition to that, I fixed the bug that https://stackoverflow.com/users/11306106/giveme30dollars 
-asked about their code in their original post"""
-
-def delaunay_triangulation(points, width, length) -> list[Triangle]:
+def delaunay_triangulation(point_list: list[Coordinates], width, length) -> list[Triangle]:
+	point_list = point_list
 	triangulation = []
-	st_point1 = Coordinates(int(width / 2), -length*2)
-	st_point2 = Coordinates(3*width, length*2)
-	st_point3 = Coordinates(-2*width, length*2)
-	super_triangle = Triangle(st_point1,st_point2,st_point3)
-	triangulation.append(super_triangle)
+	super_triangle_1 = Triangle(Coordinates(-1,-1), Coordinates(-1,length+1), Coordinates(width+1, length+1))
+	super_triangle_2 = Triangle(Coordinates(-1,-1), Coordinates(width+1,-1), Coordinates(width+1, length+1))
+	triangulation.append(super_triangle_1)
+	triangulation.append(super_triangle_2)
 
-	for point in points:
+	for point in point_list:
 		bad_triangles = []
+
 		for triangle in triangulation:
-			if triangle.is_point_in_circumcircle(point):
+			if triangle.point_inside_circumcircle(point):
 				bad_triangles.append(triangle)
 
 		polygon = []
 		for triangle in bad_triangles:
-			for triangle_edge in triangle.edges:
-				shared = False
-				for other in bad_triangles:
-					if triangle == other:
-						continue
-					for other_edge in other.edges:
-						if edge_is_equal(triangle_edge, other_edge):
-							shared = True
-				if shared is False:
-					polygon.append(triangle_edge)
-
+			for edge in triangle.edges:
+				if edge_not_in_other_bad_triangles(edge, bad_triangles):
+					polygon.append(edge)
+        #for each triangle in badTriangles do // remove them from the data structure
 		for i in range(len(bad_triangles)-1,-1,-1):
-			triangle = triangulation[i]
-			triangulation.remove(triangle)
-
+            #remove triangle from triangulation
+			triangulation.remove(bad_triangles[i])
+        #for each edge in polygon do // re-triangulate the polygonal hole
 		for edge in polygon:
-			new_triangle = Triangle(edge[0],edge[1],point)
+            #newTri := form a triangle from edge to point
+			new_triangle = Triangle(edge[0], edge[1], point)
+            #add newTri to triangulation
 			triangulation.append(new_triangle)
 
-	for i in range(len(triangulation)-1, -1, -1):
-		triangle = triangulation[i]
-		if triangle.has_vertex(st_point1):
+	for triangle in triangulation:
+        #if triangle contains a vertex from original super-triangle
+		if triangle.contains_vertex_from_super_triangle(super_triangle_1):
+            #remove triangle from triangulation
 			triangulation.remove(triangle)
-		elif triangle.has_vertex(st_point2):
-			triangulation.remove(triangle)
-		elif triangle.has_vertex(st_point3):
-			triangulation.remove(triangle)
-
 	return triangulation
 
-def edge_is_equal(edge1: list[Coordinates], edge2: list[Coordinates]):
-	if (edge1[0] == edge2[0] and edge1[1] == edge2[1]) or (edge1[0] == edge2[1] and edge1[1] == edge2[0]):
-		return True
-	return False
+def edge_not_in_other_bad_triangles(edge, bad_triangles: list[Triangle]):
+	edge2 = (edge[1], edge[0])
+	for triangle in bad_triangles:
+		if edge in triangle.edges or edge2 in triangle.edges:
+			return False
+	return True
