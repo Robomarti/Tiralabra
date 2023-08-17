@@ -1,6 +1,7 @@
 from math import inf, sqrt
 
 class Prim:
+	"""Copied version from https://www.geeksforgeeks.org/prims-minimum-spanning-tree-mst-greedy-algo-5/"""
 	def __init__(self, edges):
 		vertices = []
 		for edge in edges:
@@ -17,6 +18,7 @@ class Prim:
 		#print()
 
 	def generate_distances(self, vertices: list[tuple], edges: list[tuple]):
+		"""my own code"""
 		connections = {}
 		for edge in edges:
 			if edge[0] not in connections:
@@ -44,6 +46,7 @@ class Prim:
 		return sqrt((point2[0] - point1[0])**2 + (point2[1] - point1[1])**2)
 
 	def start(self, vertices, index=0):
+		"""Copied version from https://www.geeksforgeeks.org/prims-minimum-spanning-tree-mst-greedy-algo-5/"""
 		visited = [True] * len(vertices)
 		distances = [0] * len(vertices)
 		parents = [0] * len(vertices)
@@ -65,6 +68,7 @@ class Prim:
 						parents[j] = max_vertex_index
 
 	def find_max_distance(self, visited, distances):
+		"""Copied version from https://www.geeksforgeeks.org/prims-minimum-spanning-tree-mst-greedy-algo-5/"""
 		index = -1
 		maximum_weight = -inf
 		for i in range(len(self.vertices)):
