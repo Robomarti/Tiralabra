@@ -10,10 +10,10 @@ class Triangle:
 
 		self.edges = [(corner1,corner2),(corner2,corner3),(corner3,corner1)]
 		self.circumcenter = circumcenter_of_triangle(corner1, corner2, corner3)
-		self.radius = distance(self.corner1, self.circumcenter)
+		self.radius = get_distance(self.corner1, self.circumcenter)
 
 	def point_inside_circumcircle(self, point: Coordinates):
-		return distance(point, self.circumcenter) < self.radius
+		return get_distance(point, self.circumcenter) < self.radius
 
 	def contains_vertex_from_super_triangle(self, super_triangle):
 		for corner in self.corners:
@@ -21,7 +21,7 @@ class Triangle:
 				return True
 		return False
 
-def distance(point1: Coordinates, point2: Coordinates):
+def get_distance(point1: Coordinates, point2: Coordinates):
 	"""By Pythagoras a^2 + b^2 = c^2"""
 	return math.sqrt((point1.x-point2.x)**2 + (point1.y-point2.y)**2)
 
