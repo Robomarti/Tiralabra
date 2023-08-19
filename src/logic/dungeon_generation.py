@@ -54,8 +54,9 @@ class DungeonGenerator:
 		if used_count != len(points):
 			print("used in delaunay:", points_used)
 			print()
-			print("room count was", len(points),"while used count was", used_count, ". This means that delaunay triangulation was not succesfull in connecting every room")
-		p = logic.maximum_spanning_tree.Prim(self.paths)
+			print("room count was", len(points),"while used count was", used_count, ". This means that delaunay triangulation was not succesfull in connecting every room." /
+	 				" Most likely this is because less than three rooms were generated.")
+		p = logic.maximum_spanning_tree.reverse_prim(self.paths)
 
 	def connect_rooms(self, paths: list[tuple]):
 		"""Adds paths between the centers of the rooms"""

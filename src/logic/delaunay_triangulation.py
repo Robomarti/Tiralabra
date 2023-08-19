@@ -2,6 +2,9 @@ from datatypes.coordinates import Coordinates
 from datatypes.triangle import Triangle
 
 def delaunay_triangulation(point_list: list[Coordinates], width, length) -> list[Triangle]:
+	"""Construct paths between all the centers of the rooms that pass the Delaunay rule.
+	For more documanetation about this functions see documentation/bowyerwatson_to_python.py
+	or https://en.wikipedia.org/wiki/Bowyer%E2%80%93Watson_algorithm#Pseudocode"""
 	point_list = point_list
 	triangulation = []
 	super_triangle_1 = Triangle(Coordinates(-1,-1), Coordinates(-1,length+1), Coordinates(width+1, length+1))
@@ -22,26 +25,19 @@ def delaunay_triangulation(point_list: list[Coordinates], width, length) -> list
 				if edge_not_in_other_bad_triangles(triangle, edge, bad_triangles):
 					polygon.append(edge)
 
-        #for each triangle in badTriangles do // remove them from the data structure
 		for i in range(len(bad_triangles)-1,-1,-1):
-            #remove triangle from triangulation
 			triangulation.remove(bad_triangles[i])
 
-        #for each edge in polygon do // re-triangulate the polygonal hole
 		for edge in polygon:
-            #newTri := form a triangle from edge to point
 			new_triangle = Triangle(edge[0], edge[1], point)
-            #add newTri to triangulation
 			triangulation.append(new_triangle)
 
 	for i in range(len(triangulation)-1,-1,-1):
-        #if triangle contains a vertex from original super-triangle
 		if triangulation[i].contains_vertex_from_super_triangle(super_triangle_1):
-            #remove triangle from triangulation
 			triangulation.remove(triangulation[i])
 		elif triangulation[i].contains_vertex_from_super_triangle(super_triangle_2):
-            #remove triangle from triangulation
 			triangulation.remove(triangulation[i])
+
 	return triangulation
 
 def edge_not_in_other_bad_triangles(own_triangle, edge, bad_triangles: list[Triangle]):

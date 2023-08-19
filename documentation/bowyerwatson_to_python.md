@@ -6,11 +6,15 @@ def delaunay_triangulation(point_list, width, length) -> list[Triangle]:
 	point_list = point_list
 	#triangulation := empty triangle mesh data structure
 	triangulation = []
+
+
     #add super-triangle to triangulation // must be large enough to completely contain all the points in pointList ## I added 2 super triangles so that they form a rectangle
 	super_triangle_1 = Triangle(Coordinates(-1,-1), Coordinates(-1,length+1), Coordinates(width+1, length+1))
 	super_triangle_2 = Triangle(Coordinates(-1,-1), Coordinates(width+1,-1), Coordinates(width+1, length+1))
 	triangulation.append(super_triangle_1)
 	triangulation.append(super_triangle_2)
+
+
     #for each point in pointList do // add all the points one at a time to the triangulation
 	for point in point_list:
         #badTriangles := empty set
@@ -21,8 +25,12 @@ def delaunay_triangulation(point_list, width, length) -> list[Triangle]:
 			if triangle.point_inside_circumcircle(point):
                 #add triangle to badTriangles
 				bad_triangles.append(triangle)
+
+
         #polygon := empty set
 		polygon = []
+
+
         #for each triangle in badTriangles do // find the boundary of the polygonal hole
 		for triangle in bad_triangles:
             #for each edge in triangle do
@@ -31,23 +39,36 @@ def delaunay_triangulation(point_list, width, length) -> list[Triangle]:
 				if edge_not_in_other_bad_triangles(edge, bad_triangles): 
                     #add edge to polygon
 					polygon.append(edge)
+
+
         #for each triangle in badTriangles do // remove them from the data structure
 		for i in range(len(bad_triangles)-1,-1,-1):
             #remove triangle from triangulation
 			remove_triangle_from_triangulation(bad_triangles[i], triangulation)
+
+
         #for each edge in polygon do // re-triangulate the polygonal hole
 		for edge in polygon:
             #newTri := form a triangle from edge to point
 			new_triangle = Triangle(edge[0], edge[1], point)
             #add newTri to triangulation
 			triangulation.append(new_triangle)
-    #for each triangle in triangulation // done inserting points, now clean up
-	for triangle in triangulation:
-        #if triangle contains a vertex from original super-triangle
-		if triangle.contains_vertex_from_super_triangle(super_triangle_1):
-            #remove triangle from triangulation
-			remove_triangle_from_triangulation(triangle, triangulation)
+    
+
+	#for each triangle in triangulation // done inserting points, now clean up
+	for i in range(len(triangulation)-1,-1,-1):
+			#if triangle contains a vertex from original super-triangles
+			if triangulation[i].contains_vertex_from_super_triangle(super_triangle_1):
+				#remove triangle from triangulation
+				triangulation.remove(triangulation[i])
+			#if triangle contains a vertex from original super-triangles
+			elif triangulation[i].contains_vertex_from_super_triangle(super_triangle_2):
+				#remove triangle from triangulation
+				triangulation.remove(triangulation[i])
+
+
 	return triangulation
+
 
 def edge_not_in_other_bad_triangles(edge, bad_triangles: list[Triangle]):
 	edge2 = (edge[1], edge[0])
@@ -56,14 +77,17 @@ def edge_not_in_other_bad_triangles(edge, bad_triangles: list[Triangle]):
 			return False
 	return True
 
+
 def remove_triangle_from_triangulation(triangle, triangulation):
 	triangulation.remove(triangle)
 
 
 # Triangle class
 
+
 import math
 from datatypes.coordinates import Coordinates
+
 
 class Triangle:
 	def __init__(self, corner1: Coordinates, corner2: Coordinates, corner3: Coordinates):
@@ -72,12 +96,15 @@ class Triangle:
 		self.corner3 = corner3
 		self.corners = [corner1, corner2, corner3]
 
+
 		self.edges = [(corner1,corner2),(corner2,corner3),(corner3,corner1)]
 		self.circumcenter = circumcenter_of_triangle(corner1, corner2, corner3)
 		self.radius = distance(self.corner1, self.circumcenter)
 
+
 	def point_inside_circumcircle(self, point: Coordinates):
 		return distance(point, self.circumcenter) < self.radius
+
 
 	def contains_vertex_from_super_triangle(self, super_triangle):
 		for corner in self.corners:
@@ -85,14 +112,13 @@ class Triangle:
 				return True
 		return False
 
+
 def distance(point1: Coordinates, point2: Coordinates):
 	"""By Pythagoras a^2 + b^2 = c^2"""
 	return math.sqrt((point1.x-point2.x)**2 + (point1.y-point2.y)**2)
 
-def circumcenter_of_triangle(point1: Coordinates, point2: Coordinates, point3: Coordinates):
-	"""Using distance formula?
 
-	Shameless copy of https://stackoverflow.com/q/58116412/16279075 that I reformed and 
+	I copied this function from https://stackoverflow.com/q/58116412/16279075 that I reformed and 
 	cleaned a little."""
 	ad = point1.x **2 + point1.y **2
 	bd = point2.x **2 + point2.y **2

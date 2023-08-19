@@ -1,78 +1,49 @@
 from math import inf, sqrt
 
-class Prim:
-	"""Copied version from https://www.geeksforgeeks.org/prims-minimum-spanning-tree-mst-greedy-algo-5/"""
-	def __init__(self, edges):
-		vertices = []
-		for edge in edges:
-			if not edge[0] in vertices:
-				vertices.append(edge[0])
-			if not edge[1] in vertices:
-				vertices.append(edge[1])
+def reverse_prim(paths: list):
+	vertices = []
+	for path in paths:
+		point1 = path[0]
+		point2 = path[1]
+		if point1 not in vertices:
+			vertices.append(point1)
+		if point2 not in vertices:
+			vertices.append(point2)
 
-		#print()
-		#print("vertices:", vertices)
-		#self.distances = self.generate_distances(vertices, edges)
-		#print()
-		#print("distances:",self.distances)
-		#print()
+	weighted_distances = generate_distances(vertices, paths)
+	print(weighted_distances)
 
-	def generate_distances(self, vertices: list[tuple], edges: list[tuple]):
-		"""my own code"""
-		connections = {}
-		for edge in edges:
-			if edge[0] not in connections:
-				connections[edge[0]] = []
-			connections[edge[0]].append(edge[1])
-			if edge[1] not in connections:
-				connections[edge[1]] = []
-			connections[edge[1]].append(edge[0])
+
+def generate_distances(vertices: list[tuple], edges: list[tuple]):
+	"""Takes a list of all the vertices and all the edges, and
+	constructs a dictionary of connections between vertices, which it
+	uses to calculate lengths of all edges"""
+
+	connections = {}
+	for edge in edges:
+		if edge[0] not in connections:
+			connections[edge[0]] = []
+		connections[edge[0]].append(edge[1])
+
+		if edge[1] not in connections:
+			connections[edge[1]] = []
+		connections[edge[1]].append(edge[0])
 			
-		distances = []
-		for i in range(len(vertices)):
-			row = []
-			for j in range(len(vertices)):
-				if vertices[j] in connections[vertices[i]]:
-					distance = self.get_distance(vertices[i], vertices[j])
-				else:
-					distance = 0
-				row.append(distance)
-			distances.append(row)
+	distances = []
+	for i in range(len(vertices)):
+		row = []
+		for j in range(len(vertices)):
+			if vertices[j] in connections[vertices[i]]:
+				distance = get_distance(vertices[i], vertices[j])
+			else:
+				distance = 0
+			row.append(distance)
+		distances.append(row)
 
-		return distances
+	return distances
 
-	def get_distance(self, point1, point2):
-		"""Distance = sqrt((point2.x - point1.x)**2 + (point2.y - point1.y)**2)"""
-		return sqrt((point2[0] - point1[0])**2 + (point2[1] - point1[1])**2)
+def get_distance(point1, point2):
+	"""Distance = sqrt((point2.x - point1.x)**2 + (point2.y - point1.y)**2), a.k.a. the
+	pythagorean theorem"""
+	return sqrt((point2[0] - point1[0])**2 + (point2[1] - point1[1])**2)
 
-	def start(self, vertices, index=0):
-		"""Copied version from https://www.geeksforgeeks.org/prims-minimum-spanning-tree-mst-greedy-algo-5/"""
-		visited = [True] * len(vertices)
-		distances = [0] * len(vertices)
-		parents = [0] * len(vertices)
-
-		for i in range(len(vertices)):
-			visited[i] = False
-			distances[i] = -inf
-
-		distances[index] = inf
-		parents[index] = -1
-
-		for i in range(len(vertices)-1):
-			max_vertex_index = self.find_max_distance(visited, distances)
-			visited[max_vertex_index] = True
-			for j in range(len(vertices)):
-				if self.distances[j][max_vertex_index] != 0 and visited[j] == False:
-					if self.distances[j][max_vertex_index] > distances[j]:
-						distances[j] = self.distances[j][max_vertex_index]
-						parents[j] = max_vertex_index
-
-	def find_max_distance(self, visited, distances):
-		"""Copied version from https://www.geeksforgeeks.org/prims-minimum-spanning-tree-mst-greedy-algo-5/"""
-		index = -1
-		maximum_weight = -inf
-		for i in range(len(self.vertices)):
-			if visited[i] == False and distances[i] > maximum_weight:
-				maximum_weight = distances[i]
-				index = i
-		return index
