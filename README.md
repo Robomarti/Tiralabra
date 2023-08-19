@@ -1,5 +1,9 @@
 # Set up guide:
 
+
+Please use a release version on your reviews and issues.
+
+
 You can have virtualenv installed by using pip install virtualenv. This might make easier to remove unnecessary
 dependencies after testing my application.
 
