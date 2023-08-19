@@ -64,3 +64,32 @@ class TestRoomGenerator(unittest.TestCase):
 	def test_get_center_point(self):
 		center = self.room_generator.get_center_point(self.starting_corner, self.room_size)
 		self.assertEqual(center, Coordinates(1,1))
+
+	def test_if_room_when_room(self):
+		room_size = Rectangle(4,4)
+		starting_corner = Coordinates(1,1)
+		game_map = [["#"]*6]*6
+		is_room = self.room_generator.check_if_room(room_size, starting_corner,game_map)
+		self.assertEqual(is_room, True)
+
+	def test_if_room_when_no_room(self):
+		room_size = Rectangle(4,4)
+		starting_corner = Coordinates(1,1)
+		game_map = [["#"]*6]*6
+		game_map[2] = [" "]*6
+		is_room = self.room_generator.check_if_room(room_size, starting_corner,game_map)
+		self.assertEqual(is_room, False)
+
+	def test_if_room_when_start_next_to_border(self):
+		room_size = Rectangle(4,4)
+		starting_corner = Coordinates(0,0)
+		game_map = [["#"]*6]*6
+		is_room = self.room_generator.check_if_room(room_size, starting_corner,game_map)
+		self.assertEqual(is_room, False)
+
+	def test_if_room_when_area_would_be_small(self):
+		room_size = Rectangle(3,3)
+		starting_corner = Coordinates(1,1)
+		game_map = [["#"]*4]*4
+		is_room = self.room_generator.check_if_room(room_size, starting_corner,game_map)
+		self.assertEqual(is_room, False)

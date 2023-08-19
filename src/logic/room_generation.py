@@ -131,30 +131,22 @@ class RoomGenerator():
 
 		if starting_corner.x <= 0 or starting_corner.y <= 0:
 			return False
-		if starting_corner.x + room_size.width >= len(game_map[0])-1 or starting_corner.y + room_size.length >= len(game_map)-1:
+		if starting_corner.x + room_size.width >= len(game_map[0]):
+			room_size.width -= starting_corner.x + room_size.width - len(game_map[0]) + 1
+		if starting_corner.y + room_size.length >= len(game_map):
+			room_size.length -= starting_corner.y + room_size.length - len(game_map) + 1
+
+		if room_size.width < 3:
+			return False
+		if room_size.length < 3:
 			return False
 
 		checking_area = [starting_corner.x-1, starting_corner.y-1, \
-		   				starting_corner.x+room_size.width+1, starting_corner.y+room_size.length+1]
+		   				starting_corner.x+room_size.width, starting_corner.y+room_size.length]
 
-		#first check if the room is next to the border of the map
-		if starting_corner.x == 1: #left border
-			checking_area[0] += 1
-		if starting_corner.y == 1: #upper border
-			checking_area[1] += 1
-		if starting_corner.x + room_size.width >= len(game_map[0])-2: #right border
-			checking_area[2] = len(game_map[0])-2
-		if starting_corner.y + room_size.length >= len(game_map)-2: #lower border
-			checking_area[3] = len(game_map)-2
+		for y in range(checking_area[1], checking_area[3]+1): #from upper border to lower border
 
-		if checking_area[0] + checking_area[2] < 3:
-			return False
-		if checking_area[1] + checking_area[3] < 3:
-			return False
-
-		for y in range(checking_area[1], checking_area[3]): #from upper border to lower border
-
-			for x in range(checking_area[0], checking_area[2]): #from left border to right border
+			for x in range(checking_area[0], checking_area[2]+1): #from left border to right border
 
 				if game_map[y][x] != "#":
 					return False

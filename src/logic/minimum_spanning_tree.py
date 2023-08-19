@@ -44,7 +44,7 @@ def prim(paths: list):
 def generate_distances(vertices: list[tuple], edges: list[tuple]):
 	"""Takes a list of all the vertices and all the edges, and
 	constructs a dictionary of connections between vertices, which it
-	uses to calculate lengths of all edges"""
+	uses to calculate smallest edges between points"""
 
 	connections = {}
 	for edge in edges:
@@ -76,7 +76,7 @@ def generate_distances(vertices: list[tuple], edges: list[tuple]):
 
 	return (distances_c, new_edges_e)
 
-def get_distance(point1, point2):
+def get_distance(point1: tuple, point2: tuple):
 	"""Distance = sqrt((point2.x - point1.x)**2 + (point2.y - point1.y)**2), a.k.a. the
 	pythagorean theorem"""
 	return sqrt((point2[0] - point1[0])**2 + (point2[1] - point1[1])**2)

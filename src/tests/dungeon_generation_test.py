@@ -13,3 +13,8 @@ class TestDungeonGenerator(unittest.TestCase):
 		
 		self.dg.generate_blank_map()
 		self.assertEqual(self.dg.map, [["#", "#", "#"],  ["#", "#", "#"], ["#", "#", "#"]])
+
+	def test_remove_duplicates_from_paths(self):
+		self.dg.paths = [((1,1),(2,2)), ((2,2), (1,1)), ((1,1), (3,3))]
+		self.dg.remove_duplicates_from_paths()
+		self.assertEqual(self.dg.paths, [((1,1),(2,2)), ((1,1), (3,3))])
