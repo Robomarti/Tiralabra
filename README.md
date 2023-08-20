@@ -1,13 +1,21 @@
 # Set up guide:
 
 
-Please use a release version on your reviews and issues.
+Please use the latest release version on your reviews and issues.
 
 
 You can have virtualenv installed by using pip install virtualenv. This might make easier to remove unnecessary
 dependencies after testing my application.
 
-Start the application with 
+
+If you are using virtualenv, first use the command 
+```bash
+virtualenv .env
+```
+to create a virtual environment.
+
+
+Start the virtual environment use 
 ```bash
 source venv/Scripts/activate
 ```
