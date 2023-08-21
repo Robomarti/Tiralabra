@@ -1,7 +1,7 @@
 # Set up guide:
 
 
-Please use the latest release version on your reviews and issues.
+Please use the latest release version on your reviews and issues. The documentation in here is the most up to date, so please use the documentation on this github.
 
 
 You can have virtualenv installed by using pip install virtualenv. This might make easier to remove unnecessary
@@ -17,11 +17,11 @@ to create a virtual environment.
 
 Start the virtual environment use 
 ```bash
-source venv/Scripts/activate
+source .env/Scripts/activate
 ```
 or
 ```bash
-source venv/bin/activate
+source .env/bin/activate
 ```
 
 inside virtualenv or normally use 
