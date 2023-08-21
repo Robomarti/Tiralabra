@@ -10,18 +10,18 @@ dependencies after testing my application.
 
 If you are using virtualenv, first use the command 
 ```bash
-virtualenv .env
+virtualenv venv
 ```
 to create a virtual environment.
 
 
 Start the virtual environment use 
 ```bash
-source .env/Scripts/activate
+source venv/Scripts/activate
 ```
 or
 ```bash
-source .env/bin/activate
+source venv/bin/activate
 ```
 
 inside virtualenv or normally use 
