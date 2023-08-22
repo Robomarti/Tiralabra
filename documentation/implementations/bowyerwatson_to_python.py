@@ -34,7 +34,7 @@ def delaunay_triangulation(point_list, width, length) -> list[Triangle]:
         #for each triangle in badTriangles do // find the boundary of the polygonal hole
 		for triangle in bad_triangles:
             #for each edge in triangle do
-			for edge in triangle.edges::
+			for edge in triangle.edges:
                 #if edge is not shared by any other triangles in badTriangles
 				if edge_not_in_other_bad_triangles(edge, bad_triangles): 
                     #add edge to polygon
@@ -88,7 +88,6 @@ def remove_triangle_from_triangulation(triangle, triangulation):
 import math
 from datatypes.coordinates import Coordinates
 
-
 class Triangle:
 	def __init__(self, corner1: Coordinates, corner2: Coordinates, corner3: Coordinates):
 		self.corner1 = corner1
@@ -96,15 +95,12 @@ class Triangle:
 		self.corner3 = corner3
 		self.corners = [corner1, corner2, corner3]
 
-
 		self.edges = [(corner1,corner2),(corner2,corner3),(corner3,corner1)]
 		self.circumcenter = circumcenter_of_triangle(corner1, corner2, corner3)
-		self.radius = distance(self.corner1, self.circumcenter)
-
+		self.radius = get_distance(self.corner1, self.circumcenter)
 
 	def point_inside_circumcircle(self, point: Coordinates):
-		return distance(point, self.circumcenter) < self.radius
-
+		return get_distance(point, self.circumcenter) < self.radius
 
 	def contains_vertex_from_super_triangle(self, super_triangle):
 		for corner in self.corners:
@@ -112,11 +108,12 @@ class Triangle:
 				return True
 		return False
 
-
-def distance(point1: Coordinates, point2: Coordinates):
+def get_distance(point1: Coordinates, point2: Coordinates):
 	"""By Pythagoras a^2 + b^2 = c^2"""
 	return math.sqrt((point1.x-point2.x)**2 + (point1.y-point2.y)**2)
 
+def circumcenter_of_triangle(point1: Coordinates, point2: Coordinates, point3: Coordinates):
+	"""Using distance formula?
 
 	I copied this function from https://stackoverflow.com/q/58116412/16279075 that I reformed and 
 	cleaned a little."""

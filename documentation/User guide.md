@@ -41,7 +41,7 @@ This will be the width of the generated cave, measured in cells. Input a positiv
 So for example, to restore the original configurations, use the command
 
 ```bash
-invoke config --length 20 --width 20
+invoke config --length 30 --width 30
 ```
 
 

@@ -5,7 +5,6 @@ def delaunay_triangulation(point_list: list[Coordinates], width, length) -> list
 	"""Construct paths between all the centers of the rooms that pass the Delaunay rule.
 	For more documanetation about this functions see documentation/bowyerwatson_to_python.py
 	or https://en.wikipedia.org/wiki/Bowyer%E2%80%93Watson_algorithm#Pseudocode"""
-	point_list = point_list
 	triangulation = []
 	super_triangle_1 = Triangle(Coordinates(-1,-1), Coordinates(-1,length+1), Coordinates(width+1, length+1))
 	super_triangle_2 = Triangle(Coordinates(-1,-1), Coordinates(width+1,-1), Coordinates(width+1, length+1))

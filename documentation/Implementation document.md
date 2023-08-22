@@ -3,7 +3,8 @@
 ## Project structure
 
 The main application in src/index.py will start the process and print outputs. To start the application, invoke commands are used from tasks.py file.
-All the logic will be happening in src/logic/ directory. There is the dungeon_generation.py that delegates room creation to src/logic/room_generation.py and mostly just creates connections between the generated rooms. In addition to room_generation.py there is also delaunay_triangulation.py that the dungeon generator uses to choose which rooms should have paths between them. I probably did not implement Delaynay triangulation as it should have been since I'm not that good in math, but I think I implemented it well enough for this purpose. The only part missing is that it does not leave further parts of the map unconnected to the main part.
+All the logic will be happening in src/logic/ directory. There is the dungeon_generation.py that delegates room creation to src/logic/room_generation.py and mostly just creates connections between the generated rooms. In addition to room_generation.py there is also delaunay_triangulation.py. It contains a Delaunay triangulation algorithm that the dungeon generator uses to choose which rooms should have paths between them. Then the dungeon generator uses the minimum_spanning_tree.py, which uses Prim's algorithm to choose the paths that result in shortest lengths of paths that still connect the whole map. After this, other paths are discarded.
+
 
 
 I also created some custom datatypes for the sake of more pleasant programming for me, and they can be found under src/datatypes/ directory.
@@ -22,10 +23,12 @@ A image of the project structure:
     ├── datatypes
         ├── coordinates.py
 		├── rectangles.py
-        └── rooms.py
+        ├── rooms.py
+		└── triangle.py
     ├── logic
 		├── delaunay_triangulation.py
 		├── dungeon_generation.py
+		├── minimum_spanning_tree_test.py
         └── room_generation.py
 	├── settings
 		├── config.py
@@ -33,8 +36,10 @@ A image of the project structure:
 	├── tests
 		├── delaunay_triangulation_test.py
 		├── dungeon_generation_test.py
+		├── minimum_spanning_tree_test.py
 		├── room_generation_test.py
-        └── rooms_test.py
+        ├── rooms_test.py
+		└── triangle_test.py
 	└── index.py
 ```
 
@@ -75,3 +80,5 @@ https://stackoverflow.com/questions/71168274/create-custom-data-type-in-python
 https://en.wikipedia.org/wiki/Bowyer%E2%80%93Watson_algorithm
 
 https://en.wikipedia.org/wiki/Delaunay_triangulation 
+
+https://www.cs.helsinki.fi/u/ahslaaks/tirakirja/

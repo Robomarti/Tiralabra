@@ -1,2 +1,2 @@
-LENGTH = 20 
-WIDTH = 20
+LENGTH = 30 
+WIDTH = 30

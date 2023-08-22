@@ -65,7 +65,7 @@ class RoomGenerator():
 
 			cells = self.create_room_tiles(room_size, starting_corner, game_map)
 			center_point = self.get_center_point(starting_corner, room_size)
-			new_room = Rooms(center_point, cells, [])
+			new_room = Rooms(center_point, cells)
 			return new_room
 		return " "
 

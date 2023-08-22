@@ -10,6 +10,7 @@ def prim(paths: list):
 		if point2 not in vertices:
 			vertices.append(point2)
 
+	#Algoritmi aloittaa puun muodostamisen tilanteesta, jossa puussa on vain yksi solmu
 	tree = []
 	tree.append(vertices[0])
 	vertices.remove(vertices[0])
@@ -20,7 +21,9 @@ def prim(paths: list):
 		chosen_path = ()
 		vertex_to_add = ()
 
+		#Tämän jälkeen se etsii joka vaiheessa kevyimmän kaaren, 
 		for i in range(len(paths)):
+			#jonka toinen päätesolmu kuuluu puuhun ja toinen päätesolmu on vielä puun ulkopuolella
 			if paths[i][0] in tree and paths[i][1] not in tree:
 				length_of_edge = get_distance(paths[i][0],paths[i][1])
 				if length_of_edge < minimum_weight:
@@ -35,10 +38,12 @@ def prim(paths: list):
 					chosen_path = paths[i]
 					vertex_to_add = paths[i][0]
 
+		# ja lisää puuhun tämän kaaren
 		vertices.remove(vertex_to_add)
 		tree.append(vertex_to_add)
 		new_paths.append(chosen_path)
 
+	#Kun kaikki solmut on lisätty puuhun, pienin virittävä puu on valmis.
 	return new_paths
 
 def get_distance(point1: tuple, point2: tuple):

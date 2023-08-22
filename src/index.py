@@ -7,15 +7,19 @@ def generate_dungeon():
 	room_count = dg.room_generator.room_count
 	for _ in range(room_count):
 		dg.generate_room()
+	print("Map after random room placement:")
 	dg.print_map(dg.map)
 
 	dg.start_delaunay()
 	dg.remove_duplicates_from_paths()
 	delaunay_map = dg.connect_rooms(dg.paths)
+	print("Map after Delaunay triangulation:")
 	dg.print_map(delaunay_map)
 
 	dg.start_spanning()
 	span_map = dg.connect_rooms(dg.prim)
+	print("Map after minimum spanning tree:")
 	dg.print_map(span_map)
+	#print(dg.sort_rooms())
 
 generate_dungeon()

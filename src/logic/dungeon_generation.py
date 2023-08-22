@@ -1,9 +1,11 @@
+from copy import deepcopy
+from math import inf
 import settings.config
 import logic.room_generation
 import logic.delaunay_triangulation
 import logic.minimum_spanning_tree
 from datatypes.rooms import Rooms
-from copy import deepcopy
+from datatypes.coordinates import Coordinates
 
 class DungeonGenerator:
 	def __init__(self):
@@ -14,6 +16,7 @@ class DungeonGenerator:
 		self.width = settings.config.WIDTH
 		tile_size = 1
 		self.room_generator = logic.room_generation.RoomGenerator(self.length, self.width, tile_size)
+		self.prim = []
 
 	def generate_blank_map(self):
 		"""Initializes the map.
@@ -67,11 +70,12 @@ class DungeonGenerator:
 
 	def start_spanning(self):
 		prim = logic.minimum_spanning_tree.prim(self.paths)
+
 		new_paths = []
-		for key in prim:
-			path = prim[key]
+		for path in prim:
 			if not (path in new_paths or (path[1], path[0]) in new_paths):
 				new_paths.append(path)
+
 		self.prim = new_paths
 
 	def connect_rooms(self, paths):
@@ -98,7 +102,23 @@ class DungeonGenerator:
 
 			new_map[path[0][1]][path[0][0]] = "x"
 			new_map[path[1][1]][path[1][0]] = "x"
+
 		return new_map
+
+	def sort_rooms(self):
+		smallest = Rooms(Coordinates(inf,inf),[])
+		largest = Rooms(Coordinates(-1,-1),[])
+		for room in self.rooms:
+			if room.center_point.y < smallest.center_point.y:
+				smallest = room
+			elif room.center_point.y == smallest.center_point.y and room.center_point.x < smallest.center_point.x:
+				smallest = room
+			if room.center_point.y > largest.center_point.y:
+				largest = room
+			elif room.center_point.y == largest.center_point.y and room.center_point.x > largest.center_point.x:
+				largest = room
+
+		return (smallest.center_point, largest.center_point)
 
 	def print_map(self, map_to_print):
 		"""Prints every row of the map instead of the whole map at once, so that it is more readable"""
@@ -106,18 +126,4 @@ class DungeonGenerator:
 		print()
 		for row in map_to_print:
 			print(" ".join(row))
-		print()
-
-	def print_rooms(self):
-		"""Prints every room of the map instead of all rooms at once, so that it is more readable"""
-		print()
-		for room in self.rooms:
-			print(room)
-		print()
-
-	def print_paths(self):
-		"""Prints every path between cells"""
-		print()
-		for path in self.paths:
-			print(path)
 		print()
