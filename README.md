@@ -1,9 +1,21 @@
 # Set up guide:
 
+
+Please use the latest release version on your reviews and issues. The documentation in here is the most up to date, so please use the documentation on this github.
+
+
 You can have virtualenv installed by using pip install virtualenv. This might make easier to remove unnecessary
 dependencies after testing my application.
 
-Start the application with 
+
+If you are using virtualenv, first use the command 
+```bash
+virtualenv venv
+```
+to create a virtual environment.
+
+
+Start the virtual environment use 
 ```bash
 source venv/Scripts/activate
 ```
@@ -50,6 +62,8 @@ The command also executes all the tests required. The report will be generated t
 [Week 3 report](documentation/week%203%20report.md)
 
 [Week 4 report](documentation/week%204%20report.md)
+
+[Week 5 report](documentation/week%205%20report.md)
 
 
 ## Testing document:
