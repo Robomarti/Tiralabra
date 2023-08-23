@@ -10,16 +10,17 @@ def generate_dungeon():
 	print("Map after random room placement:")
 	dg.print_map(dg.map)
 
-	dg.start_delaunay()
-	dg.remove_duplicates_from_paths()
-	delaunay_map = dg.connect_rooms(dg.paths)
-	print("Map after Delaunay triangulation:")
-	dg.print_map(delaunay_map)
+	if dg.start_delaunay():
+		dg.remove_duplicates_from_paths()
+		delaunay_map = dg.connect_rooms(dg.paths)
+		print("Map after Delaunay triangulation:")
+		dg.print_map(delaunay_map)
 
-	dg.start_spanning()
-	span_map = dg.connect_rooms(dg.prim)
-	print("Map after minimum spanning tree:")
-	dg.print_map(span_map)
-	#print(dg.sort_rooms())
+		dg.start_spanning()
+		span_map = dg.connect_rooms(dg.prim)
+		print("Map after minimum spanning tree:")
+		printable = dg.color_map(span_map)
+		printable = dg.find_most_distant_rooms(printable)
+		dg.print_map(printable)
 
 generate_dungeon()

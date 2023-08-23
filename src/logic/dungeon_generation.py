@@ -1,11 +1,9 @@
 from copy import deepcopy
-from math import inf
 import settings.config
 import logic.room_generation
 import logic.delaunay_triangulation
 import logic.minimum_spanning_tree
-from datatypes.rooms import Rooms
-from datatypes.coordinates import Coordinates
+from datatypes.rooms import Rooms, find_longest_path, find_room_by_center
 
 class DungeonGenerator:
 	def __init__(self):
@@ -57,8 +55,11 @@ class DungeonGenerator:
 		if used_count != len(points):
 			print("used in delaunay:", points_used)
 			print()
-			print("room count was", len(points),"while used count was", {used_count}, ". This means that delaunay triangulation was not succesfull in connecting every room.",
-	 		"Most likely this is because less than three rooms were generated.")
+			print("room count was", len(points),"while used count was", used_count, ". This means that delaunay triangulation was not succesfull in connecting every room.",
+	 		"Most likely this is because less than three rooms were generated. Please try again")
+			return False
+
+		return True
 
 	def remove_duplicates_from_paths(self):
 		new_paths = []
@@ -69,19 +70,29 @@ class DungeonGenerator:
 		self.paths = new_paths
 
 	def start_spanning(self):
-		prim = logic.minimum_spanning_tree.prim(self.paths)
+		if len(self.paths) > 0:
+			prim = logic.minimum_spanning_tree.prim(self.paths)
 
-		new_paths = []
-		for path in prim:
-			if not (path in new_paths or (path[1], path[0]) in new_paths):
-				new_paths.append(path)
+			new_paths = []
+			for path in prim:
+				if not (path in new_paths or (path[1], path[0]) in new_paths):
+					new_paths.append(path)
 
-		self.prim = new_paths
+			self.prim = new_paths
+			self.create_room_connections(self.prim)
+
+	def find_most_distant_rooms(self, map_to_color):
+			"""Green square with white x for starting room and red square with white x for ending room"""
+			start_end = find_longest_path(self.rooms)
+			print("Starting room is", start_end[0].center_point, "and ending room is", start_end[1].center_point)
+			map_to_color[start_end[0].center_point.y][start_end[0].center_point.x] = '\u001b[0;37;42mx'
+			map_to_color[start_end[1].center_point.y][start_end[1].center_point.x] = '\u001b[0;37;41mx'
+			return map_to_color
 
 	def connect_rooms(self, paths):
 		"""Adds paths between the centers of the rooms"""
 		new_map = deepcopy(self.map)
-		for path in paths:
+		for path in paths:	
 			if path[0][0] < path[1][0]:
 				x_direction = 1
 			else:
@@ -105,20 +116,27 @@ class DungeonGenerator:
 
 		return new_map
 
-	def sort_rooms(self):
-		smallest = Rooms(Coordinates(inf,inf),[])
-		largest = Rooms(Coordinates(-1,-1),[])
+	def create_room_connections(self, paths):
 		for room in self.rooms:
-			if room.center_point.y < smallest.center_point.y:
-				smallest = room
-			elif room.center_point.y == smallest.center_point.y and room.center_point.x < smallest.center_point.x:
-				smallest = room
-			if room.center_point.y > largest.center_point.y:
-				largest = room
-			elif room.center_point.y == largest.center_point.y and room.center_point.x > largest.center_point.x:
-				largest = room
+			room.connected_rooms = []
 
-		return (smallest.center_point, largest.center_point)
+		for path in paths:
+			for room in self.rooms:
+				if path[0] == (room.center_point.x,room.center_point.y) and path[1] not in room.connected_rooms:
+					room.connected_rooms.append(find_room_by_center(path[1], self.rooms))
+				if path[1] == (room.center_point.x,room.center_point.y) and path[0] not in room.connected_rooms:
+					room.connected_rooms.append(find_room_by_center(path[0], self.rooms))
+
+	def color_map(self, map_to_color):
+		for i in range(len(map_to_color)):
+			for j in range(len(map_to_color[i])):
+				if map_to_color[i][j] == " ":
+					map_to_color[i][j] = '\u001b[0;34;44m' + map_to_color[i][j]
+				elif map_to_color[i][j] == ".":
+					map_to_color[i][j] = '\u001b[0;37;43m' + map_to_color[i][j]
+				else:
+					map_to_color[i][j] = '\u001b[0;37;40m' + map_to_color[i][j]
+		return map_to_color					
 
 	def print_map(self, map_to_print):
 		"""Prints every row of the map instead of the whole map at once, so that it is more readable"""
