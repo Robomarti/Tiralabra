@@ -20,7 +20,6 @@ def generate_dungeon():
 		span_map = dg.connect_rooms(dg.prim)
 		print("Map after minimum spanning tree:")
 		printable = dg.color_map(span_map)
-		printable = dg.find_most_distant_rooms(printable)
 		dg.print_map(printable)
 
 generate_dungeon()

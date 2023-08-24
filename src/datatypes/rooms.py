@@ -39,7 +39,8 @@ def find_longest_path(rooms: list[Rooms]):
 	return (most_distant_from_first, most_distant_from_initial)
 
 def find_most_distant(rooms: list[Rooms], root: Rooms):
-	"""Using pseudocode from https://en.wikipedia.org/wiki/Breadth-first_search"""
+	"""Using breadth-first search.
+	Used pseudocode from https://en.wikipedia.org/wiki/Breadth-first_search"""
 	explored = {}
 	for room in rooms:
 		room.parent = None

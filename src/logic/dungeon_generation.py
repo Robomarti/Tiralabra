@@ -4,6 +4,7 @@ import logic.room_generation
 import logic.delaunay_triangulation
 import logic.minimum_spanning_tree
 from datatypes.rooms import Rooms, find_longest_path, find_room_by_center
+from logic.flood_fill import flood_fill
 
 class DungeonGenerator:
 	def __init__(self):
@@ -81,14 +82,6 @@ class DungeonGenerator:
 			self.prim = new_paths
 			self.create_room_connections(self.prim)
 
-	def find_most_distant_rooms(self, map_to_color):
-			"""Green square with white x for starting room and red square with white x for ending room"""
-			start_end = find_longest_path(self.rooms)
-			print("Starting room is", start_end[0].center_point, "and ending room is", start_end[1].center_point)
-			map_to_color[start_end[0].center_point.y][start_end[0].center_point.x] = '\u001b[0;37;42mx'
-			map_to_color[start_end[1].center_point.y][start_end[1].center_point.x] = '\u001b[0;37;41mx'
-			return map_to_color
-
 	def connect_rooms(self, paths):
 		"""Adds paths between the centers of the rooms"""
 		new_map = deepcopy(self.map)
@@ -111,9 +104,6 @@ class DungeonGenerator:
 				if new_map[y_coordinate][path[1][0]] == "#":
 					new_map[y_coordinate][path[1][0]] = "."
 
-			new_map[path[0][1]][path[0][0]] = "x"
-			new_map[path[1][1]][path[1][0]] = "x"
-
 		return new_map
 
 	def create_room_connections(self, paths):
@@ -128,15 +118,15 @@ class DungeonGenerator:
 					room.connected_rooms.append(find_room_by_center(path[0], self.rooms))
 
 	def color_map(self, map_to_color):
-		for i in range(len(map_to_color)):
-			for j in range(len(map_to_color[i])):
-				if map_to_color[i][j] == " ":
-					map_to_color[i][j] = '\u001b[0;34;44m' + map_to_color[i][j]
-				elif map_to_color[i][j] == ".":
-					map_to_color[i][j] = '\u001b[0;37;43m' + map_to_color[i][j]
-				else:
-					map_to_color[i][j] = '\u001b[0;37;40m' + map_to_color[i][j]
-		return map_to_color					
+		"""Green square with white x for starting room and red square with white x for ending room"""
+		starting_node = self.rooms[0].center_point
+		colored_map = flood_fill(map_to_color,(starting_node.x,starting_node.y))
+
+		start_end = find_longest_path(self.rooms)
+		print("Starting room is", start_end[0].center_point, "and ending room is", start_end[1].center_point)
+		map_to_color[start_end[0].center_point.y][start_end[0].center_point.x] = '\u001b[0;37;42mx'
+		map_to_color[start_end[1].center_point.y][start_end[1].center_point.x] = '\u001b[0;37;41mx'
+		return colored_map					
 
 	def print_map(self, map_to_print):
 		"""Prints every row of the map instead of the whole map at once, so that it is more readable"""
