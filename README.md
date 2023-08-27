@@ -36,7 +36,7 @@ To start the application, use
 invoke start
 ```
 
-#Other commands:
+## Other commands:
 
 To test the app use the command 
 ```bash

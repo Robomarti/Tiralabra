@@ -57,16 +57,16 @@ My implementation of random room placement should pretty much have a time comple
 
 #### Bowyer-Watson algorithm
 
-The Bowyer-Watson version of the Delaunay triangulation has a time complexity of O(n log n) where n is the count of all the rooms on the map. However, my implementation of it has a time complexity of O(n^2), since I wanted to prioritize completing the application first, instead of optimizing the algorithm.
+The Bowyer-Watson version of the Delaunay triangulation has a time complexity of O(n log n) where n is the count of all the rooms on the map. However, my implementation of it has a time complexity of O(n^3), since I wanted to prioritize completing the application first, instead of optimizing the algorithm. The time complexity of O(n^3) instead of O(n^2) comes from quick and dirty the workaround I had to do to fix the faulty Wikipedia pseudocode.
 
 
 #### Prim's algorithm
 
 
-### Breadth-first search
+#### Breadth-first search
 
 
-### Flood fill
+#### Flood fill
 
 
 ## Possible flaws and improvements
