@@ -65,6 +65,8 @@ The command also executes all the tests required. The report will be generated t
 
 [Week 5 report](documentation/week%205%20report.md)
 
+[Week 6 report](documentation/week%206%20report.md)
+
 
 ## Testing document:
 [Here](documentation/Testing%20document.md)

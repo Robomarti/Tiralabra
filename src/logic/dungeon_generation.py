@@ -5,6 +5,7 @@ import logic.delaunay_triangulation
 import logic.minimum_spanning_tree
 from datatypes.rooms import Rooms, find_longest_path, find_room_by_center
 from logic.flood_fill import flood_fill
+from datatypes.coordinates import Coordinates
 
 class DungeonGenerator:
 	def __init__(self):
@@ -32,6 +33,14 @@ class DungeonGenerator:
 		if isinstance(room, Rooms):
 			self.rooms.append(room)
 
+	def delaunay_test(self):
+		"""Sets the rooms to a set of rooms that did not result in a correct triangulation before. Will be deleted
+		when further testing has taken place"""
+		self.rooms = [Rooms(Coordinates(8,11), [], [], None),
+		Rooms(Coordinates(10,7), [], [], None),
+		Rooms(Coordinates(4,15), [], [], None),
+		Rooms(Coordinates(16,7), [], [], None)]
+
 	def start_delaunay(self):
 		"""Sets the paths to be the edges that the delaunay component has"""
 		points = []
@@ -54,10 +63,11 @@ class DungeonGenerator:
 				used_count += 1
 
 		if used_count != len(points):
+			print()
 			print("used in delaunay:", points_used)
 			print()
 			print("room count was", len(points),"while used count was", used_count, ". This means that delaunay triangulation was not succesfull in connecting every room.",
-	 		"Most likely this is because less than three rooms were generated. Please try again")
+	 		"Please try again")
 			return False
 
 		return True
@@ -71,6 +81,10 @@ class DungeonGenerator:
 		self.paths = new_paths
 
 	def start_spanning(self):
+		"""Discards paths that are not in the minimum spanning tree of the paths.
+		
+		start_delaunay() needs to be called before this, since my implementation of Prim's algorithm uses
+		the paths that the Delaunay triangulation creates."""
 		if len(self.paths) > 0:
 			prim = logic.minimum_spanning_tree.prim(self.paths)
 
@@ -107,6 +121,7 @@ class DungeonGenerator:
 		return new_map
 
 	def create_room_connections(self, paths):
+		"""Adds connections"""
 		for room in self.rooms:
 			room.connected_rooms = []
 
@@ -123,7 +138,7 @@ class DungeonGenerator:
 		colored_map = flood_fill(map_to_color,(starting_node.x,starting_node.y))
 
 		start_end = find_longest_path(self.rooms)
-		print("Starting room is", start_end[0].center_point, "and ending room is", start_end[1].center_point)
+		print("Starting room is", start_end[0].center_point, "(green) and ending room is", start_end[1].center_point, "(red)")
 		map_to_color[start_end[0].center_point.y][start_end[0].center_point.x] = '\u001b[0;37;42mx'
 		map_to_color[start_end[1].center_point.y][start_end[1].center_point.x] = '\u001b[0;37;41mx'
 		return colored_map					

@@ -6,8 +6,9 @@ def delaunay_triangulation(point_list: list[Coordinates], width, length) -> list
 	For more documanetation about this functions see documentation/bowyerwatson_to_python.py
 	or https://en.wikipedia.org/wiki/Bowyer%E2%80%93Watson_algorithm#Pseudocode"""
 	triangulation = []
-	super_triangle_1 = Triangle(Coordinates(-1,-1), Coordinates(-1,length+1), Coordinates(width+1, length+1))
-	super_triangle_2 = Triangle(Coordinates(-1,-1), Coordinates(width+1,-1), Coordinates(width+1, length+1))
+	lr = largest_radius(point_list) + 1
+	super_triangle_1 = Triangle(Coordinates(-lr,-lr), Coordinates(-lr,length+lr), Coordinates(width+lr, length+lr))
+	super_triangle_2 = Triangle(Coordinates(-lr,-lr), Coordinates(width+lr,-lr), Coordinates(width+lr, length+lr))
 	triangulation.append(super_triangle_1)
 	triangulation.append(super_triangle_2)
 
@@ -46,3 +47,13 @@ def edge_not_in_other_bad_triangles(own_triangle, edge, bad_triangles: list[Tria
 			if edge in triangle.edges or edge2 in triangle.edges:
 				return False
 	return True
+
+def largest_radius(point_list):
+	maximum = -1
+	for point1 in point_list:
+		for point2 in point_list:
+			for point3 in point_list:
+				tri = Triangle(point1, point2, point3)
+				maximum = max(tri.radius, maximum)
+				
+	return maximum

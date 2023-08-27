@@ -55,12 +55,18 @@ According to the testing data, time complexity seems to be O(n), where n is the 
 My implementation of random room placement should pretty much have a time complexity of O(1), since it only has to check if there is room for a room and place the room. It tries at most 20*10 = 200 times to generate a new room until it gives up, so it could be also presented as a time complexity of O(200).
 
 
-#### Delaunay triangulation
+#### Bowyer-Watson algorithm
 
 The Bowyer-Watson version of the Delaunay triangulation has a time complexity of O(n log n) where n is the count of all the rooms on the map. However, my implementation of it has a time complexity of O(n^2), since I wanted to prioritize completing the application first, instead of optimizing the algorithm.
 
 
 #### Prim's algorithm
+
+
+### Breadth-first search
+
+
+### Flood fill
 
 
 ## Possible flaws and improvements
