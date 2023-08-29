@@ -26,16 +26,21 @@ def get_distance(point1: Coordinates, point2: Coordinates):
 	return math.sqrt((point1.x-point2.x)**2 + (point1.y-point2.y)**2)
 
 def circumcenter_of_triangle(point1: Coordinates, point2: Coordinates, point3: Coordinates):
-	"""Using distance formula?
+	"""Returns the circumcenter of a triangle when given the
+	three points that define it.
+	
+	From https://en.wikipedia.org/wiki/Circumcircle#Cartesian_coordinates_2"""
+	a_dist = point1.x **2 + point1.y **2
+	b_dist = point2.x **2 + point2.y **2
+	c_dist = point3.x **2 + point3.y **2
+	distance = 2 * (point1.x * (point2.y - point3.y) +
+		 point2.x * (point3.y - point1.y) + point3.x * (point1.y - point2.y))
 
-	I copied this function from https://stackoverflow.com/q/58116412/16279075 that I reformed and 
-	cleaned a little."""
-	ad = point1.x **2 + point1.y **2
-	bd = point2.x **2 + point2.y **2
-	cd = point3.x **2 + point3.y **2
-	distance = 2 * (point1.x * (point2.y - point3.y) + point2.x * (point3.y - point1.y) + point3.x * (point1.y - point2.y))
 	if distance == 0:
 		distance = 0.1
-	x_coordinate = 1 / distance * (ad * (point2.y - point3.y) + bd * (point3.y - point1.y) + cd * (point1.y - point2.y))
-	y_coordinate = 1 / distance * (ad * (point3.x - point2.x) + bd * (point1.x - point3.x) + cd * (point2.x - point1.x))
+	x_coordinate = 1 / distance * (a_dist * (point2.y - point3.y) +
+				b_dist * (point3.y - point1.y) + c_dist * (point1.y - point2.y))
+	y_coordinate = 1 / distance * (a_dist * (point3.x - point2.x) +
+				b_dist * (point1.x - point3.x) + c_dist * (point2.x - point1.x))
+
 	return Coordinates(x_coordinate, y_coordinate)

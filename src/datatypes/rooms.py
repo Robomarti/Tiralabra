@@ -1,5 +1,4 @@
 from __future__ import annotations
-from math import inf
 from dataclasses import dataclass
 from datatypes.coordinates import Coordinates
 
@@ -11,35 +10,23 @@ class Rooms:
 	connected_rooms: list
 	parent: Rooms
 
-def find_room_by_cell(cell: tuple, room_list: list[Rooms]):
-	for room in room_list:
-		if cell in room.cells:
-			return room
-	return None
-
 def find_room_by_center(center: tuple, room_list: list[Rooms]):
 	for room in room_list:
 		if center == (room.center_point.x, room.center_point.y):
 			return room
 	return None
 
-def is_own_room(cell: tuple, room_center: tuple, rooms: list[Rooms]):
-	found = find_room_by_cell(cell, rooms)
-	if found and (found.center_point.x, found.center_point.y) == room_center:
-		return True
-	return False
-
-
 def find_longest_path(rooms: list[Rooms]):
-	"""Finds the two most distant rooms by first finding the most distant room from the random first room
-	in rooms. Then it finds the most distant room from that room.
-	Source: https://saturncloud.io/blog/algorithm-for-diameter-of-a-graph-explained-for-data-scientists/#:~:text=The%20Algorithm%3A%20Breadth-First%20Search,from%20a%20given%20source%20node."""
+	"""Finds the two most distant rooms by first finding the most
+	distant room from the random first room in rooms. Then it finds
+	the most distant room from that room."""
 	most_distant_from_first = find_most_distant(rooms, rooms[0])
 	most_distant_from_initial = find_most_distant(rooms, most_distant_from_first)
 	return (most_distant_from_first, most_distant_from_initial)
 
 def find_most_distant(rooms: list[Rooms], root: Rooms):
-	"""Using breadth-first search.
+	"""Returns the most distant room from root using breadth-first search.
+	Also creates finds the parent for each room.
 	Used pseudocode from https://en.wikipedia.org/wiki/Breadth-first_search"""
 	explored = {}
 	for room in rooms:
@@ -77,4 +64,10 @@ def distance_to_root(room, parent):
 	return get_distance_of_path(room, parent)
 
 def get_distance_of_path(point1: Rooms, point2: Rooms):
-	return abs(point2.center_point.x - point1.center_point.x) + abs(point2.center_point.y - point1.center_point.y)
+	"""Returns the distance of a path.
+	Paths do not use the Pythagoraan theorem for distances,
+	since they are constructed by first going to x-axis's direction
+	and then to y-axis's direction"""
+	x_distance = abs(point2.center_point.x - point1.center_point.x)
+	y_distance = abs(point2.center_point.y - point1.center_point.y)
+	return x_distance + y_distance

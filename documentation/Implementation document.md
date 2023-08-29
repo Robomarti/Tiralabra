@@ -64,7 +64,7 @@ The Bowyer-Watson version of the Delaunay triangulation has a time complexity of
 
 
 #### Breadth-first search
-
+Source: https://saturncloud.io/blog/algorithm-for-diameter-of-a-graph-explained-for-data-scientists/#:~:text=The%20Algorithm%3A%20Breadth-First%20Search,from%20a%20given%20source%20node.
 
 #### Flood fill
 

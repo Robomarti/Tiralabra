@@ -3,9 +3,8 @@ import settings.config
 import logic.room_generation
 import logic.delaunay_triangulation
 import logic.minimum_spanning_tree
-from datatypes.rooms import Rooms, find_longest_path, find_room_by_center
 from logic.flood_fill import flood_fill
-from datatypes.coordinates import Coordinates
+from datatypes.rooms import Rooms, find_longest_path, find_room_by_center
 
 class DungeonGenerator:
 	def __init__(self):
@@ -16,30 +15,24 @@ class DungeonGenerator:
 		self.width = settings.config.WIDTH
 		tile_size = 1
 		self.room_generator = logic.room_generation.RoomGenerator(self.length, self.width, tile_size)
-		self.prim = []
 
 	def generate_blank_map(self):
-		"""Initializes the map.
-		Initially the map only needs to be length * width many cells of #"""
+		"""Creates a blank map.
+		A blank map is a matrix which has width * length of #"""
+		new_map = []
 		for _ in range(self.length):
 			row = []
 			for _ in range(self.width):
 				row.append("#")
-			self.map.append(row)
+			new_map.append(row)
+
+		self.map = new_map
 
 	def generate_room(self):
 		"""Generates a new room and if it succeeded, adds it to the rooms list"""
 		room = self.room_generator.generate_room(self.map)
 		if isinstance(room, Rooms):
 			self.rooms.append(room)
-
-	def delaunay_test(self):
-		"""Sets the rooms to a set of rooms that did not result in a correct triangulation before. Will be deleted
-		when further testing has taken place"""
-		self.rooms = [Rooms(Coordinates(8,11), [], [], None),
-		Rooms(Coordinates(10,7), [], [], None),
-		Rooms(Coordinates(4,15), [], [], None),
-		Rooms(Coordinates(16,7), [], [], None)]
 
 	def start_delaunay(self):
 		"""Sets the paths to be the edges that the delaunay component has"""
@@ -58,21 +51,23 @@ class DungeonGenerator:
 				points_used[(edge[1].x, edge[1].y)] = True
 
 		used_count = 0
-		for key in points_used:
-			if points_used[key]:
+		for item in points_used.items():
+			if item[0]:
 				used_count += 1
 
 		if used_count != len(points):
 			print()
 			print("used in delaunay:", points_used)
 			print()
-			print("room count was", len(points),"while used count was", used_count, ". This means that delaunay triangulation was not succesfull in connecting every room.",
-	 		"Please try again")
+			print("room count was", len(points),"while used count was", used_count)
+			print(". This means that delaunay triangulation was not",
+	  			"succesful in connecting every room. Please try again")
 			return False
 
 		return True
 
 	def remove_duplicates_from_paths(self):
+		"""Remove duplicate paths from self.paths"""
 		new_paths = []
 		for path in self.paths:
 			if not (path in new_paths or (path[1], path[0]) in new_paths):
@@ -85,21 +80,20 @@ class DungeonGenerator:
 		
 		start_delaunay() needs to be called before this, since my implementation of Prim's algorithm uses
 		the paths that the Delaunay triangulation creates."""
-		if len(self.paths) > 0:
-			prim = logic.minimum_spanning_tree.prim(self.paths)
+		new_paths = []
+		spanning_tree = logic.minimum_spanning_tree.prim(self.paths)
 
-			new_paths = []
-			for path in prim:
-				if not (path in new_paths or (path[1], path[0]) in new_paths):
-					new_paths.append(path)
+		for path in spanning_tree:
+			if not (path in new_paths or (path[1], path[0]) in new_paths):
+				new_paths.append(path)
 
-			self.prim = new_paths
-			self.create_room_connections(self.prim)
+		self.create_room_connections(new_paths)
+		return new_paths
 
 	def connect_rooms(self, paths):
 		"""Adds paths between the centers of the rooms"""
 		new_map = deepcopy(self.map)
-		for path in paths:	
+		for path in paths:
 			if path[0][0] < path[1][0]:
 				x_direction = 1
 			else:
@@ -121,7 +115,8 @@ class DungeonGenerator:
 		return new_map
 
 	def create_room_connections(self, paths):
-		"""Adds connections"""
+		"""Saves the connections between rooms.
+		These are used later when finding a parent for each room"""
 		for room in self.rooms:
 			room.connected_rooms = []
 
@@ -133,15 +128,17 @@ class DungeonGenerator:
 					room.connected_rooms.append(find_room_by_center(path[0], self.rooms))
 
 	def color_map(self, map_to_color):
-		"""Green square with white x for starting room and red square with white x for ending room"""
+		"""Returns the map which was given as a argument.
+		Each cell of the map is replaced with a different colored cell."""
 		starting_node = self.rooms[0].center_point
 		colored_map = flood_fill(map_to_color,(starting_node.x,starting_node.y))
-
 		start_end = find_longest_path(self.rooms)
-		print("Starting room is", start_end[0].center_point, "(green) and ending room is", start_end[1].center_point, "(red)")
+		print("Starting room is", start_end[0].center_point,
+			"(green) and ending room is", start_end[1].center_point, "(red)")
+		#Green square with white x for starting room and red square with white x for ending room
 		map_to_color[start_end[0].center_point.y][start_end[0].center_point.x] = '\u001b[0;37;42mx'
 		map_to_color[start_end[1].center_point.y][start_end[1].center_point.x] = '\u001b[0;37;41mx'
-		return colored_map					
+		return colored_map
 
 	def print_map(self, map_to_print):
 		"""Prints every row of the map instead of the whole map at once, so that it is more readable"""

@@ -19,25 +19,11 @@ class RoomGenerator():
 		maximum = max(4, math.floor(self.width * self.length / 100))
 		return random.randint(minimum, maximum)
 
-	def get_radius_of_cirle(self):
-		"""Return the radius of a circle drawn inside of the game map"""
-		smaller = min(self.length, self.width)
-
-		return math.floor(smaller / 2)
-
-	def get_random_point_in_circle(self, center_x, center_y):
+	def get_random_point_in_map(self, width, length):
 		"""Returns a random point in a circle"""
-		radius = self.get_radius_of_cirle()
-		r = radius * math.sqrt(random.random())
-		theta = 2 * math.pi * random.random()
-
-		x_coordinate = self.roundm(center_x + r * math.cos(theta), self.tile_size)
-		y_coordinate = self.roundm(center_y + r * math.sin(theta), self.tile_size)
+		x_coordinate = random.randint(1, width)
+		y_coordinate = random.randint(1, length)
 		return Coordinates(x_coordinate, y_coordinate)
-
-	def roundm(self, n, tile_size):
-		"""Rounds up coordinates so that it snaps to the dungeon map grid made out of pixels"""
-		return math.floor(((n + tile_size - 1) / tile_size)) * tile_size
 
 	def get_room_size(self):
 		"""Returns a random sized rectangle. 
@@ -90,9 +76,9 @@ class RoomGenerator():
 		room_size = self.get_room_size()
 		width = self.width // 2
 		length = self.length // 2
-		starting_corner = self.get_starting_corner(room_size, width, length)
+		starting_corner = self.get_random_point_in_map(width, length)
 		while starting_corner.x <= 0 or starting_corner.y <= 0:
-			starting_corner = self.get_starting_corner(room_size, width, length)
+			starting_corner = self.get_random_point_in_map(width, length)
 		away_direction = self.get_away_direction()
 
 		failed_attempts = 0
@@ -108,27 +94,20 @@ class RoomGenerator():
 				big_failures += 1
 				failed_attempts = 0
 				room_size = self.get_room_size()
-				starting_corner = self.get_starting_corner(room_size, width, length)
+				starting_corner = self.get_random_point_in_map(width, length)
 				while starting_corner.x <= 0 or starting_corner.y <= 0:
-					starting_corner = self.get_starting_corner(room_size, width, length)
+					starting_corner = self.get_random_point_in_map(width, length)
 				away_direction = self.get_away_direction()
 			else:
 				return None
 
 		return (room_size,starting_corner)
 
-	def get_starting_corner(self, room_size: Rectangle, width, length):
-		starting_corner = self.get_random_point_in_circle(width, length)
-		starting_corner.x -= room_size.width
-		starting_corner.y -= room_size.length
-		return starting_corner
-
 	def check_if_room(self, room_size: Rectangle, starting_corner: Coordinates, game_map):
 		"""Checks if there is room for a room
 		
 		Returns false if there is no room for a room or there is room for a room, but the room
 		would be less than 3 wide or less than 3 long."""
-
 		if starting_corner.x <= 0 or starting_corner.y <= 0:
 			return False
 		if starting_corner.x + room_size.width >= len(game_map[0]):
@@ -144,19 +123,17 @@ class RoomGenerator():
 		checking_area = [starting_corner.x-1, starting_corner.y-1, \
 		   				starting_corner.x+room_size.width, starting_corner.y+room_size.length]
 
-		for y in range(checking_area[1], checking_area[3]+1): #from upper border to lower border
-
-			for x in range(checking_area[0], checking_area[2]+1): #from left border to right border
-
-				if game_map[y][x] != "#":
+		#from upper border to lower border
+		for y_coordinate in range(checking_area[1], checking_area[3]+1):
+			#from left border to right border
+			for x_coordinate in range(checking_area[0], checking_area[2]+1):
+				if game_map[y_coordinate][x_coordinate] != "#":
 					return False
 		return True
 
 	def get_away_direction(self):
 		"""Returns the direction where the room should head when there is not room for it
-		in its original position. The direction will be chosen randomly.
-		"""
-
+		in its original position. The direction will be chosen randomly."""
 		direction_chance = float(random.random())
 
 		if direction_chance > 0.75:
