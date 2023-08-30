@@ -19,10 +19,10 @@ class RoomGenerator():
 		maximum = max(4, math.floor(self.width * self.length / 100))
 		return random.randint(minimum, maximum)
 
-	def get_random_point_in_map(self, width, length):
+	def get_random_point_in_map(self):
 		"""Returns a random point in a circle"""
-		x_coordinate = random.randint(1, width)
-		y_coordinate = random.randint(1, length)
+		x_coordinate = random.randint(1, self.width-1)
+		y_coordinate = random.randint(1, self.length-1)
 		return Coordinates(x_coordinate, y_coordinate)
 
 	def get_room_size(self):
@@ -74,11 +74,9 @@ class RoomGenerator():
 		"""Checks whether the room has an empty place to be placed in.
 		If not, moves the room to a random direction"""
 		room_size = self.get_room_size()
-		width = self.width // 2
-		length = self.length // 2
-		starting_corner = self.get_random_point_in_map(width, length)
+		starting_corner = self.get_random_point_in_map()
 		while starting_corner.x <= 0 or starting_corner.y <= 0:
-			starting_corner = self.get_random_point_in_map(width, length)
+			starting_corner = self.get_random_point_in_map()
 		away_direction = self.get_away_direction()
 
 		failed_attempts = 0
@@ -94,9 +92,9 @@ class RoomGenerator():
 				big_failures += 1
 				failed_attempts = 0
 				room_size = self.get_room_size()
-				starting_corner = self.get_random_point_in_map(width, length)
+				starting_corner = self.get_random_point_in_map()
 				while starting_corner.x <= 0 or starting_corner.y <= 0:
-					starting_corner = self.get_random_point_in_map(width, length)
+					starting_corner = self.get_random_point_in_map()
 				away_direction = self.get_away_direction()
 			else:
 				return None

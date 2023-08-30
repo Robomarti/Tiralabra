@@ -27,25 +27,31 @@ invoke config
 ```
 You can change the configurations by adding one or more of the following lines to the end of the command.
 ```bash
---length integer_Here
+--length integer_here
 ```
 This will be the length of the generated cave, measured in cells. Input a positive integer.
 
 
 ```bash
---width integer_Here
+--width integer_here
 ```
 This will be the width of the generated cave, measured in cells. Input a positive integer.
+
+
+```bash
+--spanning string_here
+```
+This will determine whether the process uses minimum spanning tree for the paths, or just the Delaunay triangulation. Type True if you want to use spanning and False if you do not.
 
 
 So for example, to restore the original configurations, use the command
 
 ```bash
-invoke config --length 30 --width 30
+invoke config --length 30 --width 30 --spanning True
 ```
 
 
-Note: the application does not work well with width and length of 13 or less for each. Please make sure that width and length are at least 14. In my testings, only at width and length of 13 did the application spawn at least three rooms, and larger values result in a larger chance of obtaining a succesful dungeon generation.
+Note: the application does not work well with width and length of 13 or less for each. That is why I removed the option to generate maps with lengths or widths of under 20.
 
 
 To test the app use the command 

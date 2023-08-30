@@ -47,8 +47,8 @@ def find_most_distant(rooms: list[Rooms], root: Rooms):
 
 	return find_room_by_center(longest_path(rooms), rooms)
 
-def longest_path(rooms):
-	"""Generates distances from each room to their the root room.
+def longest_path(rooms) -> tuple:
+	"""Generates distances from each room to the root room.
 	Returns the coordinates of the most distant room"""
 	distances = {}
 	for room in rooms:

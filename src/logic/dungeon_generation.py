@@ -1,5 +1,5 @@
 from copy import deepcopy
-import settings.config
+from settings.config import get_configs
 import logic.room_generation
 import logic.delaunay_triangulation
 import logic.minimum_spanning_tree
@@ -11,8 +11,9 @@ class DungeonGenerator:
 		self.map = []
 		self.rooms = []
 		self.paths = []
-		self.length = settings.config.LENGTH
-		self.width = settings.config.WIDTH
+		configs = get_configs()
+		self.length = configs[0]
+		self.width = configs[1]
 		tile_size = 1
 		self.room_generator = logic.room_generation.RoomGenerator(self.length, self.width, tile_size)
 
@@ -90,7 +91,10 @@ class DungeonGenerator:
 		return new_paths
 
 	def connect_rooms(self, paths):
-		"""Adds paths between the centers of the rooms"""
+		"""Adds paths between the centers of the rooms.
+		Returns a copy of the map so that each phase of the algorithm can
+		be printed. For example when we add paths according to deulaunay, we
+		later remove the paths but the map would still show the deleted paths"""
 		new_map = deepcopy(self.map)
 		for path in paths:
 			if path[0][0] < path[1][0]:
