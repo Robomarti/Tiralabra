@@ -38,3 +38,9 @@ class TestDelaunayTriangulation(unittest.TestCase):
 			triangulation[i] = triangulation[i].corners
 
 		self.assertEqual(triangulation, [t1,t2,t3])
+
+	def test_with_degenerate_points(self):
+		"""The Bowyer-Wattson algorithm does not work with degenerate point set"""
+		coordinates = [Coordinates(8,1), Coordinates(10,1), Coordinates(4,1)]
+		triangulation = delaunay_triangulation.delaunay_triangulation(coordinates, 20, 20)
+		self.assertEqual(triangulation, [])

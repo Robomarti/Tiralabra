@@ -87,7 +87,6 @@ class DungeonGenerator:
 			if not (path in new_paths or (path[1], path[0]) in new_paths):
 				new_paths.append(path)
 
-		self.create_room_connections(new_paths)
 		return new_paths
 
 	def connect_rooms(self, paths):
@@ -132,12 +131,14 @@ class DungeonGenerator:
 		Each cell of the map is replaced with a different colored cell."""
 		starting_node = self.rooms[0].center_point
 		colored_map = flood_fill(map_to_color,(starting_node.x,starting_node.y))
+
 		start_end = find_longest_path(self.rooms)
 		print("Starting room is", start_end[0].center_point,
 			"(green) and ending room is", start_end[1].center_point, "(red)")
 		#Green square with white x for starting room and red square with white x for ending room
-		map_to_color[start_end[0].center_point.y][start_end[0].center_point.x] = '\u001b[0;37;42mx'
-		map_to_color[start_end[1].center_point.y][start_end[1].center_point.x] = '\u001b[0;37;41mx'
+		colored_map[start_end[0].center_point.y][start_end[0].center_point.x] = '\u001b[0;37;42mx'
+		colored_map[start_end[1].center_point.y][start_end[1].center_point.x] = '\u001b[0;37;41mx'
+
 		return colored_map
 
 	def print_map(self, map_to_print):

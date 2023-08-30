@@ -1,2 +1,3 @@
 LENGTH = 30 
 WIDTH = 30
+USE_SPANNING = True

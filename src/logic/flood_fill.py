@@ -1,4 +1,4 @@
-def flood_fill(game_map:list, starting_node: tuple):
+def flood_fill(game_map: list, starting_node: tuple):
 	"""Simple flood fill algorithm using
 	pseudocode from https://en.wikipedia.org/wiki/Flood_fill
 	Replaces floor cells with blue color, and path cells with yellow"""

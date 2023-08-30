@@ -1,6 +1,8 @@
 import logic.dungeon_generation
+import settings.config
 
 dg = logic.dungeon_generation.DungeonGenerator()
+use_spanning = settings.config.USE_SPANNING
 
 def generate_dungeon():
 	while True:
@@ -20,10 +22,17 @@ def generate_dungeon():
 	print("Map after Delaunay triangulation:")
 	dg.print_map(delaunay_map)
 
-	spanned_paths = dg.start_spanning()
-	span_map = dg.connect_rooms(spanned_paths)
-	print("Map after minimum spanning tree:")
-	printable = dg.color_map(span_map)
-	dg.print_map(printable)
+	if use_spanning == "True":
+		spanned_paths = dg.start_spanning()
+		dg.create_room_connections(spanned_paths)
+		span_map = dg.connect_rooms(spanned_paths)
+		print("Map after minimum spanning tree and flood fill:")
+		printable = dg.color_map(span_map)
+		dg.print_map(printable)
+	else:
+		dg.create_room_connections(dg.paths)
+		print("Map after flood fill:")
+		printable = dg.color_map(delaunay_map)
+		dg.print_map(printable)
 
 generate_dungeon()
