@@ -5,85 +5,73 @@
 ## What has been tested, and how
 
 
-Configs
+#### Configs
 
 I tested:
-
 	- that the configs work with wrong type of user input.
 	- that the configs set width and lenght of less than 20 as 20
 
 
 
-Bowyer-Watson
+#### Bowyer-Watson
 
 I tested:
-
 	- the edge_not_in_other_bad_triangles() function by giving it input with edge in and edge not in other triangles.
-
 	- the whole algorithm by giving it input, and comparing the algorithm's output to the one I calculated with GeoGebra.
-
 	- that the algorithm does not work with three points that are on the same y- or x-axis, as this algorithm should not work with them.
 
 
 
-Dungeon generation
+#### Dungeon generation
 
 I tested:
-
 	- that start_delaunay() returns True on success, and that it returns False when it is unsuccessful, for example when the points it uses are on the same y- or x-axis.
 	- that the create_room_connections() function creates connections between rooms correctly.
 	- some basic functions, but not much else since most functions in the dungeon generation are functions that are already tested elsewhere.
 
 
 
-Flood fill
+#### Flood fill
 
 I tested:
-
 	- that the fill affects the cells of the map correctly.
 
 
-Prim's algorithm:
+
+#### Prim's algorithm:
 
 I tested:
-
 	- that the distance function it uses works correctly.
-
 	- that every vertex that is in the input of the algorithm, is also in the output.
-
 	- that the algorithm gives a correct result in two different graphs by calculating by hand.
 
 
 
-Room generation
+#### Room generation
 
 I tested:
-
 	- that rooms can not be placed on top of each other.
-
 	- that the room generation knows when there is room for a room. I tested this by giving it a map with room and a map without room as inputs.
-
 	- that the room generation does not affect the outer rims of the map, even when the generator wants to put the room there.
-
 	- other various functions in the room_generation.py.
 
 
-Rooms
+
+#### Rooms
 
 I tested:
-
 	- that the various functions the file uses work
 
 
 
-Triangle
+#### Triangle
 
 I tested:
-
 	- that the distance function it uses works.
 
 
 
+#### Execution speed
 
 I tested how long the code takes to execute with different room sizes, while using the minimum spanning tree option spanning = True. For this I used Python's built-in profilers. Here is the execution speed test data.
 

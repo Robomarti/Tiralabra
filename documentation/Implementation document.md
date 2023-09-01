@@ -66,16 +66,21 @@ My implementation of random room placement should pretty much have a time comple
 
 #### Bowyer-Watson algorithm
 
-The Bowyer-Watson version of the Delaunay triangulation has a time complexity of O(n log n) where n is the count of all the rooms on the map. However, my implementation of it has a time complexity of O(n^3), since I wanted to prioritize completing the application first, instead of optimizing the algorithm. The time complexity of O(n^3) instead of O(n^2) comes from quick and dirty the workaround I had to do to fix the faulty Wikipedia pseudocode.
+The Bowyer-Watson version of the Delaunay triangulation has a time complexity of O(n log n) where n is the count of all the rooms on the map. However, my implementation of it has a time complexity of O(n^3), since I wanted to prioritize completing the application first, instead of optimizing the algorithm. The time complexity of O(n^3) instead of O(n^2) comes from a quick workaround I had to do to fix the faulty Wikipedia pseudocode.
 
 
 #### Prim's algorithm
-O(n^2), where n is the count of vertices (center points of room)
+
+O(n*m), where n is the count of vertices (center points of room), and m is the count of all the paths that the algorithm should use. This is because I first loop through all the vertices and inside that loop I loop over all the paths. Note that this is usually larger than the normal O(n^2) time complexity, since there can be a lot more paths than vertices.
+
 
 #### Breadth-first search
-Source: https://saturncloud.io/blog/algorithm-for-diameter-of-a-graph-explained-for-data-scientists/#:~:text=The%20Algorithm%3A%20Breadth-First%20Search,from%20a%20given%20source%20node.
+
+I got the idea to use Breadth-first search for the diameter of the graph from [saturncloud](https://saturncloud.io/blog/algorithm-for-diameter-of-a-graph-explained-for-data-scientists/#:~:text=The%20Algorithm%3A%20Breadth-First%20Search,from%20a%20given%20source%20node). I used the pseudocode from [Wikipedia](https://en.wikipedia.org/wiki/Breadth-first_search), and its worst case time complexity is O(V^2), where V is the count of vertices and. However, my version does not search a certain goal, instead it just connects the rooms to their parents, and after that uses another function to find the maximum distance.
 
 #### Flood fill
+
+I used the pseudocode from [Wikipedia](https://en.wikipedia.org/wiki/Flood_fill), and used a data structure (in this case queue) based implementation. The worst case time complexity is O(n) where n is the count of all the cells.
 
 
 ## Possible flaws and improvements
@@ -97,3 +102,9 @@ https://en.wikipedia.org/wiki/Bowyer%E2%80%93Watson_algorithm
 https://en.wikipedia.org/wiki/Delaunay_triangulation 
 
 https://www.cs.helsinki.fi/u/ahslaaks/tirakirja/
+
+https://saturncloud.io/blog/algorithm-for-diameter-of-a-graph-explained-for-data-scientists/#:~:text=The%20Algorithm%3A%20Breadth-First%20Search,from%20a%20given%20source%20node
+
+https://en.wikipedia.org/wiki/Breadth-first_search
+
+https://en.wikipedia.org/wiki/Flood_fill

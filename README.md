@@ -70,6 +70,8 @@ The command also executes all the tests required. The report will be generated t
 
 [Week 6 report](documentation/week%206%20report.md)
 
+[Week 7 report](documentation/week%207%20report.md)
+
 
 ## Testing document:
 [Here](documentation/Testing%20document.md)

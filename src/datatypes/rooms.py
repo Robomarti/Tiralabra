@@ -49,6 +49,8 @@ def find_most_distant(rooms: list[Rooms], root: Rooms):
 
 def longest_path(rooms) -> tuple:
 	"""Generates distances from each room to the root room.
+	The root room will always be the the root argument of
+	find_most_distant(), since it is the only room without a parent.
 	Returns the coordinates of the most distant room"""
 	distances = {}
 	for room in rooms:

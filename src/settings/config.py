@@ -2,24 +2,34 @@ def get_configs():
 	with open("src/settings/config.txt", "r", encoding="utf8") as text:
 		lines = text.readlines()
 		try:
-			LENGTH = int(lines[0].split(' ')[2])
+			if lines[0].split(' ')[0] != "LENGTH":
+				length = 30
+			else:
+				length = int(lines[0].split(' ')[2])
 		except:
-			LENGTH = 30
+			length = 30
 
 		try:
-			WIDTH = int(lines[1].split(' ')[2])
+			if lines[1].split(' ')[0] != "WIDTH":
+				width = 30
+			else:
+				width = int(lines[1].split(' ')[2])
 		except:
-			WIDTH = 30
+			width = 30
 
-		if LENGTH < 20:
-			LENGTH = 20
+		length = max(length, 20)
 
-		if WIDTH < 20:
-			WIDTH = 20
+		width = max(width, 20)
 
-		USE_SPANNING = lines[2].split(' ')[2]
-		if USE_SPANNING not in ["True", "False"]:
-			USE_SPANNING = "True"
+		try:
+			if lines[2].split(' ')[0] != "USE_SPANNING":
+				spanning = "True"
+			else:
+				spanning = lines[2].split(' ')[2]
+				if spanning not in ["True", "False"]:
+					spanning = "True"
+		except:
+			spanning = "True"
 
-	return (LENGTH, WIDTH, USE_SPANNING)
+	return (length, width, spanning)
 		
