@@ -13,7 +13,7 @@ virtualenv venv
 to create a virtual environment.
 
 
-Start the application with 
+To start the virtual environment use 
 ```bash
 source venv/Scripts/activate
 ```
@@ -27,6 +27,12 @@ inside virtualenv or normally use
 pip install -r requirements.txt
 ```
 to install dependencies
+
+
+To start the application, use
+```bash
+invoke start
+```
 
 
 ## Other commands:
@@ -49,7 +55,7 @@ This will be the width of the generated cave, measured in cells. Input a positiv
 
 
 ```bash
---spanning string_here
+--spanning boolean_here
 ```
 This will determine whether the process uses minimum spanning tree for the paths, or just the Delaunay triangulation. Type True if you want to use spanning and False if you do not.
 
