@@ -21,12 +21,11 @@ def lint(ctx):
 def config(ctx, length, width, spanning):
 	"""Prints the given inputs and sets the corresponding config values as the inputs.
 	
-	It first checks which config values are given and only replaces those values."""
+	It first checks which config values are given and valid, and only replaces those values."""
 	old_configs = get_configs()
 	if len(width) > 0:
 		try:
-			int(width[0])
-			config_width = width[0]
+			config_width = max(int(width[0]), 20)
 		except:
 			config_width = old_configs[1]
 			print("The width was not given in an integer form")
@@ -35,8 +34,7 @@ def config(ctx, length, width, spanning):
 
 	if len(length) > 0:
 		try:
-			int(length[0])
-			config_length = length[0]
+			config_length = max(int(length[0]),20)
 		except:
 			config_length = old_configs[0]
 			print("The length was not given in an integer form")

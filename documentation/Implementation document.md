@@ -3,8 +3,14 @@
 ## Project structure
 
 The main application in src/index.py will start the process and print outputs. To start the application, invoke commands are used from tasks.py file.
-All the logic will be happening in src/logic/ directory. There is the dungeon_generation.py that delegates room creation to src/logic/room_generation.py and mostly just creates connections between the generated rooms. In addition to room_generation.py there is also delaunay_triangulation.py. It contains a Delaunay triangulation algorithm that the dungeon generator uses to choose which rooms should have paths between them. Then the dungeon generator uses the minimum_spanning_tree.py, which uses Prim's algorithm to choose the paths that result in shortest lengths of paths that still connect the whole map. After this, other paths are discarded.
+All the logic will be happening in src/logic/ directory. 
 
+In the src/logic/ directory there is dungeon_generation.py that delegates room creation to src/logic/room_generation.py and mostly just creates connections between the generated rooms. In addition to room_generation.py there is also delaunay_triangulation.py. It contains a Delaunay triangulation algorithm that the dungeon generator uses to choose which rooms should have paths between them. 
+
+Then the dungeon generator uses the minimum_spanning_tree.py, which uses Prim's algorithm to choose the paths that result in shortest lengths of paths that still connect the whole map. After this, other paths are discarded.
+
+
+Finally, src/logic/flood_fill.py replaces all the empty tiles (room tiles) with blue color, and all the dots (paths between rooms) with yellow color. After that datatypes/rooms.py contains the function find_longest_path() which finds the two most distant rooms from each other, and assigns them as the start and end rooms.
 
 
 I also created some custom datatypes for the sake of more pleasant programming for me, and they can be found under src/datatypes/ directory.
@@ -28,14 +34,17 @@ A image of the project structure:
     ├── logic
 		├── delaunay_triangulation.py
 		├── dungeon_generation.py
+		├── flood_fill.py
 		├── minimum_spanning_tree_test.py
         └── room_generation.py
 	├── settings
 		├── config.py
         └── config.txt
 	├── tests
+		├── config_test.py
 		├── delaunay_triangulation_test.py
 		├── dungeon_generation_test.py
+		├── flood_fill_test.py
 		├── minimum_spanning_tree_test.py
 		├── room_generation_test.py
         ├── rooms_test.py

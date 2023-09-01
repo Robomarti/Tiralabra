@@ -38,6 +38,22 @@ class TestDelaunayTriangulation(unittest.TestCase):
 			triangulation[i] = triangulation[i].corners
 
 		self.assertEqual(triangulation, [t1,t2,t3])
+	
+	def test_delaunay2(self):
+		"""Tests delaunay with a set of rooms that I calculated by hand"""
+		coordinates = [Coordinates(2,3),Coordinates(7,2),Coordinates(5,5),Coordinates(7,6),Coordinates(3,7),Coordinates(11,2),Coordinates(11,5),Coordinates(9,8),Coordinates(4,1),
+				 Coordinates(1,6),Coordinates(6,8),Coordinates(11,7),]
+		triangulation = delaunay_triangulation.delaunay_triangulation(coordinates, 20, 20)
+		triangles = [[Coordinates(5,5),Coordinates(7,2),Coordinates(7,6)],[Coordinates(5,5),Coordinates(2,3),Coordinates(3,7)],[Coordinates(7,6),Coordinates(7,2),Coordinates(11,5)],
+			   [Coordinates(7,2),Coordinates(11,2),Coordinates(11,5)],[Coordinates(7,6),Coordinates(11,5),Coordinates(9,8)],[Coordinates(7,2),Coordinates(5,5),Coordinates(4,1)],
+			   [Coordinates(5,5),Coordinates(2,3),Coordinates(4,1)],[Coordinates(11,2),Coordinates(7,2),Coordinates(4,1)],[Coordinates(3,7),Coordinates(2,3),Coordinates(1,6)],
+			   [Coordinates(7,6),Coordinates(5,5),Coordinates(6,8)],[Coordinates(5,5),Coordinates(3,7),Coordinates(6,8)],[Coordinates(9,8),Coordinates(7,6),Coordinates(6,8)],
+			   [Coordinates(9,8),Coordinates(11,5),Coordinates(11,7)]]
+
+		for i in range(len(triangulation)):
+			triangulation[i] = triangulation[i].corners
+
+		self.assertEqual(triangulation, triangles)
 
 	def test_with_degenerate_points(self):
 		"""The Bowyer-Wattson algorithm does not work with degenerate point set"""

@@ -1,4 +1,4 @@
-from math import inf, sqrt
+from math import inf
 
 def prim(paths: list):
 	vertices = []
@@ -43,5 +43,5 @@ def prim(paths: list):
 
 def get_distance(point1: tuple, point2: tuple):
 	"""Distance = sqrt((point2.x - point1.x)**2 + (point2.y - point1.y)**2), a.k.a. the
-	pythagorean theorem"""
-	return sqrt((point2[0] - point1[0])**2 + (point2[1] - point1[1])**2)
+	pythagorean theorem. No need to use square root when all distances do not use it"""
+	return (point2[0] - point1[0])**2 + (point2[1] - point1[1])**2

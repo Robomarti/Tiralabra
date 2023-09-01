@@ -3,6 +3,13 @@
 You can have virtualenv installed by using pip install virtualenv. This might make easier to remove unnecessary
 dependencies after testing my application.
 
+If you are using virtualenv, first use the command 
+```bash
+virtualenv venv
+```
+to create a virtual environment.
+
+
 Start the application with 
 ```bash
 source venv/Scripts/activate

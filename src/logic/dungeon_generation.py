@@ -38,29 +38,25 @@ class DungeonGenerator:
 	def start_delaunay(self):
 		"""Sets the paths to be the edges that the delaunay component has"""
 		points = []
-		points_used = {}
 		for room in self.rooms:
 			points.append(room.center_point)
-			points_used[(room.center_point.x, room.center_point.y)] = False
 
 		delaunay = logic.delaunay_triangulation.delaunay_triangulation(points, self.width, self.length)
 
+		points_used = []
 		for triangle in delaunay:
 			for edge in triangle.edges:
 				self.paths.append(((edge[0].x,edge[0].y), (edge[1].x,edge[1].y)))
-				points_used[(edge[0].x, edge[0].y)] = True
-				points_used[(edge[1].x, edge[1].y)] = True
+				if edge[0] not in points_used:
+					points_used.append(edge[0])
+				if edge[1] not in points_used:
+					points_used.append(edge[1])
 
-		used_count = 0
-		for item in points_used.items():
-			if item[0]:
-				used_count += 1
-
-		if used_count != len(points):
+		if len(points_used) != len(points):
 			print()
-			print("used in delaunay:", points_used)
+			print("used in delaunay:", points)
 			print()
-			print("room count was", len(points),"while used count was", used_count)
+			print("room count was", len(points),"while used count was", len(points_used))
 			print(". This means that delaunay triangulation was not",
 	  			"succesful in connecting every room. Please try again")
 			return False
