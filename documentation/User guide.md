@@ -1,5 +1,8 @@
 # Set up guide:
 
+If you are using Unix-style operating system, you might have to replace all the "python" parts of the invoke commands to "python3" in the tasks.py file.
+
+
 You can have virtualenv installed by using pip install virtualenv. This might make easier to remove unnecessary
 dependencies after testing my application.
 
